@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string.h>
 
-#include "checker.h"
-#include "mode.h"
+#include "Checker.h"
+#include "Mode.h"
 
 using namespace std;
 
@@ -47,11 +47,6 @@ Comparision mode
     – Ex: a.exe -c quick-sort merge-sort 100000 -nsorted
 */
 
-void quit(const string message)
-{
-    cerr << message;
-    exit(EXIT_SUCCESS);
-}
 
 int classifyCmd(int argc, char* argv[])
 {
