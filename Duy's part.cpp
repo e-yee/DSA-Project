@@ -1,6 +1,10 @@
 #include <iostream>
-#include <vector>
 #include <chrono>
+#include <fstream>
+
+#include "checker.h"
+#include "DataGenerator.h"
+#include "mode.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -301,6 +305,85 @@ void flashSort(int a[], int n, double &duration)
     duration = (double)elapsed.count();
 }
 
+// ----------------------- command line -----------------------
+// Cmd 5: (6 arguments)
+//     – Prototype: [Execution file] -c [Algorithm 1] [Algorithm 2] [Input size] [Input order]
+//     – Ex: a.exe -c quick-sort merge-sort 100000 -nsorted
+
+int toInt(const string s) 
+{
+    int num = 0;
+    for (int i = 0; i < s.size(); i++)
+        num = num * 10 + s[i] - 48;
+    return num;
+}
+
+void writeFile(string filename, int a[], int n) 
+{
+    ofstream ofs(filename.c_str());
+    if (!ofs.is_open()) {
+        cout << "Open file unsuccessfully!";
+        return;
+    }
+
+    ofs << n << "\n";
+    for (int i = 0; i < n; i++)
+        ofs << a[i] << " ";
+
+    ofs.close();
+}
+
+void printOutput(char* argv[], int data_type, long long cnt_cmp1, long long cnt_cmp2, double duration1, double duration2)
+{
+    cout << "COMPARISON MODE\n";
+    cout << "Algorithm: " << argv[2] << " | " << argv[3] << "\n";
+    cout << "Input size: " << argv[4] << "\n";
+    cout << "Input order: ";
+    switch (data_type) {
+    case 0:
+        cout << "randomized data\n";
+        break;
+    case 1:
+        cout << "nearly sorted data\n";
+        break;
+    case 2:
+        cout << "sorted data\n";
+        break;
+    case 3:
+        cout << " reverse sorted data\n";
+        break;
+    }
+    cout << "-------------------------\n";
+    cout << "Running time: " << duration1 << " | " << duration2 << "\n";
+    cout << "Comparisons: " << cnt_cmp1 << " | " << cnt_cmp2 << "\n";
+}
+
+void theFifthCmd(int argc, char* argv[], int cmd) 
+{
+    int data_type;
+    for (int i = 0; i < orders.size(); i++) 
+        if (orders[i] == argv[5]) {
+            data_type = i;
+            break;
+        }
+    
+    int n = toInt(argv[4]);
+    int *a = new int[n];
+    generateData(a, n, data_type);
+
+    string filename = "input.txt";
+    writeFile(filename, a, n);
+
+    long long cnt_cmp1, cnt_cmp2;
+    countCmp(a, n, argv[2], cnt_cmp1);
+    countCmp(a, n, argv[3], cnt_cmp2);
+
+    double duration1, duration2;
+    calcTime(a, n, argv[2], duration1);
+    calcTime(a, n, argv[3], duration2);
+
+    printOutput(argv, data_type, cnt_cmp1, cnt_cmp2, duration1, duration2);
+}
 /* 
 
 ----------------------- references -----------------------

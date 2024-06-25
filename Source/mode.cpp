@@ -73,7 +73,7 @@ void cmpMode(int argc, char* argv[], int cmd)
 {
     cout << "COMPARISION MODE\n";
     cout << "Algorithm: " << argv[2] << " | " << argv[3] << '\n';
-
+    
 
 
 
