@@ -61,7 +61,7 @@ void heapSort(int a[], int n, long long &cnt_cmp)
 
 void countSort(int a[], int n, int exp, long long &cnt_cmp) 
 {
-    int *output = new int[n];
+    vector<int> output(n);
     int count[10] = { 0 };
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
@@ -77,8 +77,6 @@ void countSort(int a[], int n, int exp, long long &cnt_cmp)
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
         a[i] = output[i];
-
-    delete[] output;
 }
 
 void radixSort(int a[], int n, long long &cnt_cmp)
@@ -207,7 +205,7 @@ void heapSort(int a[], int n, double &duration)
 
 void countSort(int a[], int n, int exp) 
 {
-    int *output = new int[n];
+    vector<int> output(n);
     int count[10] = { 0 };
 
     for (int i = 0; i < n; i++)
@@ -223,8 +221,6 @@ void countSort(int a[], int n, int exp)
 
     for (int i = 0; i < n; i++)
         a[i] = output[i];
-
-    delete[] output;
 }
 
 void radixSort(int a[], int n, double &duration)
