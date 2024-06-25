@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "vector": "cpp",
-        "xutility": "cpp",
-        "iomanip": "cpp",
-        "random": "cpp"
-    }
-}

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "checker.h"
+#include "Checker.h"
 
 using namespace std;
 

@@ -42,7 +42,8 @@ void algMode(int argc, char* argv[], int cmd)
         }
 
         int n = 0;
-        int* a = readFile(argv[3], n);
+        int* a1 = readFile(argv[3], n);
+        int* a2 = readFile(argv[3], n); // may need to sort the data twice
 
         cout << "Input file: " << argv[3] << '\n';
         cout << "Input size: " << n << '\n';
@@ -51,22 +52,24 @@ void algMode(int argc, char* argv[], int cmd)
 
         if (para_time) {
             double duration;
-            calcTime(a, n, argv[2], duration);
+            calcTime(a1, n, argv[2], duration);
             cout << setprecision(4) << fixed;
             cout << "Running time: " << duration / 1e6 << " (milliseconds)\n";
+        
         }
 
         if (para_comp) {
             long long cnt_cmp;
-            countCmp(a, n, argv[2], cnt_cmp);
+            countCmp(a2, n, argv[2], cnt_cmp);
             cout << "Comparisons: " << cnt_cmp << '\n';
         }
 
-        delete[] a;
+        delete[] a1;
+        delete[] a2;
     }
 
     // for debugging
-    cout << "\ncmd: " << cmd << '\n';
+    cerr << "\ncmd: " << cmd << '\n';
 }
 
 void cmpMode(int argc, char* argv[], int cmd)
@@ -78,7 +81,7 @@ void cmpMode(int argc, char* argv[], int cmd)
 
 
     // for debugging
-    cout << "\ncmd: " << cmd << '\n';
+    cerr << "\ncmd: " << cmd << '\n';
 }
 
 
