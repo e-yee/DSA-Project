@@ -33,7 +33,7 @@ void insertionSort(int a[], int n, long long &cnt_cmp)
         int key = a[i];
         int j = i - 1;
 
-        while (++cnt_cmp && key < a[j] && ++cnt_cmp && j >= 0) {
+        while (++cnt_cmp && j >= 0 && ++cnt_cmp && key < a[j]) {
             a[j + 1] = a[j];
             --j;
         }
@@ -148,7 +148,7 @@ void insertionSort(int a[], int n, double &duration)
         int key = a[i];
         int j = i - 1;
 
-        while (key < a[j] && j >= 0) {
+        while (j >= 0 && key < a[j]) {
             a[j + 1] = a[j];
             --j;
         }
