@@ -24,6 +24,7 @@ int* readFile(string filename, int &n)
     for (int i = 0; i < n; i++)
         fin >> a[i];
     
+    fin.close();
     return a;
 }
 
