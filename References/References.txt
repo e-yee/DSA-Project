@@ -1,0 +1,10 @@
+1. Khoi's part
+
+2. Quan's part
+
+3. Phu's part
+
+4. Duy's part
+- Heap Sort: https://www.geeksforgeeks.org/heap-sort/
+- Radix Sort: https://www.geeksforgeeks.org/radix-sort/
+- Flash Sort: https://www.youtube.com/watch?v=CAaDJJUszvE
