@@ -5,6 +5,16 @@
 3. Phu's part
 
 4. Duy's part
-- Heap Sort: https://www.geeksforgeeks.org/heap-sort/
-- Radix Sort: https://www.geeksforgeeks.org/radix-sort/
-- Flash Sort: https://www.youtube.com/watch?v=CAaDJJUszvE
+- Heap Sort: 
++ Links: https://www.geeksforgeeks.org/heap-sort/
++ Date: 25/06/2024
+
+- Radix Sort: 
++ Links: https://www.geeksforgeeks.org/radix-sort/
++ Time: 25/06/2024
+
+- Flash Sort: 
++ Links: https://www.youtube.com/watch?v=CAaDJJUszvE
+         https://github.com/HaiDuc0147/sortingAlgorithm/blob/main/reportSort/Sort.cpp 
+         (from line 279 to line 330)
++ Date: 25/06/2024
