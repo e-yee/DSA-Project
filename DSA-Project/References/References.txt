@@ -1,0 +1,31 @@
+1. Khoi's part
+- Quick Sort:
++ Links: https://www.geeksforgeeks.org/quick-sort-algorithm/
++ Date: 27/06/2024
+
+- Shaker Sort:
++ Links: https://www.geeksforgeeks.org/cocktail-sort/
++ Date: 27/06/2024
+
+- Shell Sort:
++ Links: https://www.geeksforgeeks.org/shellsort/
++ Date: 27/06/2024
+2. Quan's part
+
+3. Phu's part
+
+4. Duy's part
+- Heap Sort: 
++ Links: https://www.geeksforgeeks.org/heap-sort/
+         https://www.geeksforgeeks.org/binary-heap/
++ Date: 25/06/2024
+
+- Radix Sort: 
++ Links: https://www.geeksforgeeks.org/radix-sort/
++ Time: 25/06/2024
+
+- Flash Sort: 
++ Links: https://www.youtube.com/watch?v=CAaDJJUszvE
+         https://github.com/HaiDuc0147/sortingAlgorithm/blob/main/reportSort/Sort.cpp 
+         (from line 279 to line 330)
++ Date: 25/06/2024
