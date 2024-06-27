@@ -9,6 +9,9 @@
 #include "Checker.h"
 #include "Sort_KP.h"
 
+#define DEBUG_MODE 0
+#define OUTFILE "output.txt"
+
 using namespace std;
 
 int* readFile(string filename, int &n)
@@ -27,6 +30,20 @@ int* readFile(string filename, int &n)
     
     fin.close();
     return a;
+}
+
+void writeFile(string filename, int a[], int n)
+{
+    ofstream fout(filename.c_str());
+
+    if (!fout.is_open())
+        quit("Fail to open \"" + filename + "\"");
+
+    fout << n << '\n';
+    for (int i = 0; i < n; i++)
+        fout << a[i] << " \n"[i == n - 1];
+
+    fout.close();
 }
 
 void algMode(int argc, char* argv[], int cmd)
@@ -49,21 +66,42 @@ void algMode(int argc, char* argv[], int cmd)
 
         cout << "Input file: " << argv[3] << '\n';
         cout << "Input size: " << n << '\n';
-
         cout << "-----------------------------\n";
+
 
         if (para_time) {
             double duration;
             calcTime(a1, n, argv[2], duration);
             cout << setprecision(4) << fixed;
             cout << "Running time: " << duration / 1e6 << " (milliseconds)\n";
-        
+
+            if (!is_sorted(a1, a1 + n))
+                quit("The array is not sorted!");
+            
+            /* For debugging */
+            if (DEBUG_MODE) {
+                if (is_sorted(a2, a2 + n))
+                    cerr << "[DEBUG]: The array a1[] is sorted!\n";
+            }
+
+            writeFile(OUTFILE, a1, n);
         }
 
         if (para_comp) {
             long long cnt_cmp;
             countCmp(a2, n, argv[2], cnt_cmp);
             cout << "Comparisons: " << cnt_cmp << '\n';
+
+            if (!is_sorted(a2, a2 + n))
+                quit("The array is not sorted!");
+
+            /* For debugging */
+            if (DEBUG_MODE) {
+                if (is_sorted(a2, a2 + n))
+                    cerr << "[DEBUG]: The array a1[] is sorted!\n";
+            }
+
+            writeFile(OUTFILE, a2, n);
         }
 
         delete[] a1;
@@ -74,8 +112,10 @@ void algMode(int argc, char* argv[], int cmd)
         bool para_comp = false;
     }
 
-    // for debugging
-    cerr << "\ncmd: " << cmd << '\n';
+    /* For debugging */
+    if (DEBUG_MODE) {
+       cerr << "\ncmd: " << cmd << '\n';
+    }    
 }
 
 void cmpMode(int argc, char* argv[], int cmd)
@@ -86,8 +126,10 @@ void cmpMode(int argc, char* argv[], int cmd)
 
 
 
-    // for debugging
-    cerr << "\ncmd: " << cmd << '\n';
+
+    if (DEBUG_MODE) {
+       cerr << "\ncmd: " << cmd << '\n';
+    }    
 }
 
 
@@ -98,11 +140,11 @@ void calcTime(int a[], int n, const string alg, double &duration)
     if (type == 0) selectionSort(a, n, duration); 
     if (type == 1) insertionSort(a, n, duration);
     if (type == 2) bubbleSort(a, n, duration);
-     if (type == 3) shakerSort(a, n, duration);
-     if (type == 4) shellSort(a, n, duration);
+    if (type == 3) shakerSort(a, n, duration);
+    if (type == 4) shellSort(a, n, duration);
     // if (type == 5) heapSort(a, n, duration);
     if (type == 6) mergeSort(a, n, duration);
-     if (type == 7) quickSort(a, n, duration);
+    if (type == 7) quickSort(a, n, duration);
     if (type == 8) countingSort(a, n, duration);
     // if (type == 9) radixSort(a, n, duration);
     // if (type == 10) flashSort(a, n, duration);
@@ -115,11 +157,11 @@ void countCmp(int a[], int n, const string alg, long long &cnt_cmp)
     if (type == 0) selectionSort(a, n, cnt_cmp); 
     if (type == 1) insertionSort(a, n, cnt_cmp);
     if (type == 2) bubbleSort(a, n, cnt_cmp);
-     if (type == 3) shakerSort(a, n, cnt_cmp);
-     if (type == 4) shellSort(a, n, cnt_cmp);
+    if (type == 3) shakerSort(a, n, cnt_cmp);
+    if (type == 4) shellSort(a, n, cnt_cmp);
     // if (type == 5) heapSort(a, n, cnt_cmp);
     if (type == 6) mergeSort(a, n, cnt_cmp);
-     if (type == 7) quickSort(a, n, cnt_cmp);
+    if (type == 7) quickSort(a, n, cnt_cmp);
     if (type == 8) countingSort(a, n, cnt_cmp);
     // if (type == 9) radixSort(a, n, cnt_cmp);
     // if (type == 10) flashSort(a, n, cnt_cmp);

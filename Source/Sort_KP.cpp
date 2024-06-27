@@ -6,17 +6,21 @@ using namespace std::chrono;
 
 // -------------------------- count comparisons --------------------------
 
-int partition(int a[], int low, int high, long long& cnt_cmp) {
+int Partition(int a[], int low, int high, long long& cnt_cmp)
+{
     int pos = low;
 
-    if ((++cnt_cmp && a[high / 2] >= min(a[low], a[high - 1])) && (++cnt_cmp && a[high / 2] <= max(a[low], a[high]))) pos = high / 2;
-
-    if ((++cnt_cmp && a[high] >= min(a[low], a[high / 2])) && (++cnt_cmp && a[high] <= max(a[low], a[high / 2]))) pos = high;
+    if ((++cnt_cmp && a[high / 2] >= min(a[low], a[high - 1])) && (++cnt_cmp && a[high / 2] <= max(a[low], a[high])))
+        pos = high / 2;
+    if ((++cnt_cmp && a[high] >= min(a[low], a[high / 2])) && (++cnt_cmp && a[high] <= max(a[low], a[high / 2])))
+        pos = high;
 
     swap(a[low], a[pos]);
+
     int pivot = low;
     int lastS1 = low;
     int first_unknown = low + 1;
+ 
     while (++cnt_cmp && first_unknown <= high) {
         if (++cnt_cmp && a[first_unknown] < a[pivot]) {
             swap(a[lastS1 + 1], a[first_unknown]);
@@ -25,23 +29,27 @@ int partition(int a[], int low, int high, long long& cnt_cmp) {
         first_unknown++;
     }
     swap(a[pivot], a[lastS1]);
+    
     return lastS1;
 }
 
-void quickSortRecursion(int a[], int low, int high, long long& cnt_cmp) {
+void quickSortRecursion(int a[], int low, int high, long long& cnt_cmp)
+{
     if (low < high) {
-        int pivot = partition(a, low, high, cnt_cmp);
+        int pivot = Partition(a, low, high, cnt_cmp);
         quickSortRecursion(a, low, pivot - 1, cnt_cmp);
         quickSortRecursion(a, pivot + 1, high, cnt_cmp);
     }
 }
 
-void quickSort(int a[], int n, long long& cnt_cmp) {
+void quickSort(int a[], int n, long long& cnt_cmp)
+{
     cnt_cmp = 0;
     quickSortRecursion(a, 0, n - 1, cnt_cmp);
 }
 
-void shakerSort(int a[], int n, long long& cnt_cmp) {
+void shakerSort(int a[], int n, long long& cnt_cmp)
+{
     cnt_cmp = 0;
     bool swapped = true;
     int start = 0, end = n - 1;
@@ -59,7 +67,6 @@ void shakerSort(int a[], int n, long long& cnt_cmp) {
         if (!swapped) break;
 
         swapped = false;
-
         end--;
 
         for (int i = end - 1; ++cnt_cmp && i >= start; i--) {
@@ -75,6 +82,7 @@ void shakerSort(int a[], int n, long long& cnt_cmp) {
 
 void shellSort(int arr[], int n, long long& cnt_cmp) {
     cnt_cmp = 0;
+
     for (int gap = n / 2; ++cnt_cmp && gap > 0; gap /= 2) {
         for (int i = gap; ++cnt_cmp && i < n; i += 1) {
             int temp = arr[i];
@@ -87,18 +95,25 @@ void shellSort(int arr[], int n, long long& cnt_cmp) {
     }
 }
 
+
+
 // ----------------------- calculate running time -----------------------
-int partition(int a[], int low, int high) {
+
+int Partition(int a[], int low, int high)
+{
     int pos = low;
 
-    if (a[high / 2] >= min(a[low], a[high - 1]) && a[high / 2] <= max(a[low], a[high])) pos = high / 2;
-
-    if (a[high] >= min(a[low], a[high / 2]) && a[high] <= max(a[low], a[high / 2])) pos = high;
+    if (a[high / 2] >= min(a[low], a[high - 1]) && a[high / 2] <= max(a[low], a[high]))
+        pos = high / 2;
+    if (a[high] >= min(a[low], a[high / 2]) && a[high] <= max(a[low], a[high / 2]))
+        pos = high;
 
     swap(a[low], a[pos]);
+
     int pivot = low;
     int lastS1 = low;
     int first_unknown = low + 1;
+    
     while (first_unknown <= high) {
         if (a[first_unknown] < a[pivot]) {
             swap(a[lastS1 + 1], a[first_unknown]);
@@ -107,18 +122,21 @@ int partition(int a[], int low, int high) {
         first_unknown++;
     }
     swap(a[pivot], a[lastS1]);
+
     return lastS1;
 }
 
-void quickSortRecursion(int a[], int low, int high) {
+void quickSortRecursion(int a[], int low, int high)
+{
     if (low < high) {
-        int pivot = partition(a, low, high);
+        int pivot = Partition(a, low, high);
         quickSortRecursion(a, low, pivot - 1);
         quickSortRecursion(a, pivot + 1, high);
     }
 }
 
-void quickSort(int a[], int n, double& duration) {
+void quickSort(int a[], int n, double& duration)
+{
     duration = 0;
     auto time_start = system_clock::now();
 
@@ -129,7 +147,8 @@ void quickSort(int a[], int n, double& duration) {
     duration = (double)elapsed.count();
 }
 
-void shakerSort(int a[], int n, double& duration) {
+void shakerSort(int a[], int n, double& duration)
+{
     duration = 0;
     auto time_start = system_clock::now();
 
@@ -149,7 +168,6 @@ void shakerSort(int a[], int n, double& duration) {
         if (!swapped) break;
 
         swapped = false;
-
         end--;
 
         for (int i = end - 1; i >= start; i--) {
@@ -167,7 +185,8 @@ void shakerSort(int a[], int n, double& duration) {
     duration = (double)elapsed.count();
 }
 
-void shellSort(int arr[], int n, double& duration) {
+void shellSort(int arr[], int n, double& duration)
+{
     duration = 0;
     auto time_start = system_clock::now();
 

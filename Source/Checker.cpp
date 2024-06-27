@@ -7,7 +7,7 @@ using namespace std;
 
 void quit(const string message)
 {
-    cerr << "ERROR: " << message << '\n';
+    cerr << "[ERROR]: " << message << '\n';
     exit(EXIT_SUCCESS);
 }
 
@@ -32,7 +32,7 @@ bool isInt(string s)
     for (int i = 0; i < s.size(); i++) {
         if ('1' <= s[i] && s[i] <= '9')
             check = true;        
-        if (s[i] == '0' && check == false)
+        if (s[i] == '0' && !check)
             return false;
     }
     
