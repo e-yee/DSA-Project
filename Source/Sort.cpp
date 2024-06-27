@@ -76,12 +76,12 @@ void Merge(int a[], int l, int mid, int r, long long &cnt_cmp)
     }
 }
 
-void megreSortRecursion(int a[], int l, int r, long long &cnt_cmp)
+void mergeSortRecursion(int a[], int l, int r, long long &cnt_cmp)
 {
     if (++cnt_cmp && l < r) {
         int mid = (l + r) >> 1;
-        megreSortRecursion(a, l, mid, cnt_cmp);
-        megreSortRecursion(a, mid + 1, r, cnt_cmp);
+        mergeSortRecursion(a, l, mid, cnt_cmp);
+        mergeSortRecursion(a, mid + 1, r, cnt_cmp);
         Merge(a, l, mid, r, cnt_cmp);
     }
 }
@@ -89,7 +89,7 @@ void megreSortRecursion(int a[], int l, int r, long long &cnt_cmp)
 void mergeSort(int a[], int n, long long &cnt_cmp)
 {
     cnt_cmp = 0;
-    megreSortRecursion(a, 0, n, cnt_cmp);
+    mergeSortRecursion(a, 0, n, cnt_cmp);
 }
 
 void countingSort(int a[], int n, long long &cnt_cmp)
@@ -200,12 +200,12 @@ void Merge(int a[], int l, int mid, int r)
     }
 }
 
-void megreSortRecursion(int a[], int l, int r)
+void mergeSortRecursion(int a[], int l, int r)
 {
     if (l < r) {
         int mid = (l + r) >> 1;
-        megreSortRecursion(a, l, mid);
-        megreSortRecursion(a, mid + 1, r);
+        mergeSortRecursion(a, l, mid);
+        mergeSortRecursion(a, mid + 1, r);
         Merge(a, l, mid, r);
     }
 }
@@ -215,7 +215,7 @@ void mergeSort(int a[], int n, double &duration)
     duration = 0;
     auto start_time = system_clock::now();
 
-    megreSortRecursion(a, 0, n);
+    mergeSortRecursion(a, 0, n);
 
     auto end_time = system_clock::now();
     auto elapsed = end_time - start_time;

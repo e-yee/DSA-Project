@@ -1,5 +1,15 @@
 1. Khoi's part
+- Quick Sort:
++ Links: https://www.geeksforgeeks.org/quick-sort-algorithm/
++ Date: 27/06/2024
 
+- Shaker Sort:
++ Links: https://www.geeksforgeeks.org/cocktail-sort/
++ Date: 27/06/2024
+
+- Shell Sort:
++ Links: https://www.geeksforgeeks.org/shellsort/
++ Date: 27/06/2024
 2. Quan's part
 
 3. Phu's part

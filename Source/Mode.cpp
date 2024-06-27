@@ -7,6 +7,7 @@
 #include "Mode.h"
 #include "Sort.h"
 #include "Checker.h"
+#include "Sort_KP.h"
 
 using namespace std;
 
@@ -68,6 +69,10 @@ void algMode(int argc, char* argv[], int cmd)
         delete[] a1;
         delete[] a2;
     }
+    else if (cmd == 2) {
+        bool para_time = false;
+        bool para_comp = false;
+    }
 
     // for debugging
     cerr << "\ncmd: " << cmd << '\n';
@@ -93,11 +98,11 @@ void calcTime(int a[], int n, const string alg, double &duration)
     if (type == 0) selectionSort(a, n, duration); 
     if (type == 1) insertionSort(a, n, duration);
     if (type == 2) bubbleSort(a, n, duration);
-    // if (type == 3) shakerSort(a, n, duration);
-    // if (type == 4) shellSort(a, n, duration);
+     if (type == 3) shakerSort(a, n, duration);
+     if (type == 4) shellSort(a, n, duration);
     // if (type == 5) heapSort(a, n, duration);
     if (type == 6) mergeSort(a, n, duration);
-    // if (type == 7) quickSort(a, n, duration);
+     if (type == 7) quickSort(a, n, duration);
     if (type == 8) countingSort(a, n, duration);
     // if (type == 9) radixSort(a, n, duration);
     // if (type == 10) flashSort(a, n, duration);
@@ -110,11 +115,11 @@ void countCmp(int a[], int n, const string alg, long long &cnt_cmp)
     if (type == 0) selectionSort(a, n, cnt_cmp); 
     if (type == 1) insertionSort(a, n, cnt_cmp);
     if (type == 2) bubbleSort(a, n, cnt_cmp);
-    // if (type == 3) shakerSort(a, n, cnt_cmp);
-    // if (type == 4) shellSort(a, n, cnt_cmp);
+     if (type == 3) shakerSort(a, n, cnt_cmp);
+     if (type == 4) shellSort(a, n, cnt_cmp);
     // if (type == 5) heapSort(a, n, cnt_cmp);
     if (type == 6) mergeSort(a, n, cnt_cmp);
-    // if (type == 7) quickSort(a, n, cnt_cmp);
+     if (type == 7) quickSort(a, n, cnt_cmp);
     if (type == 8) countingSort(a, n, cnt_cmp);
     // if (type == 9) radixSort(a, n, cnt_cmp);
     // if (type == 10) flashSort(a, n, cnt_cmp);
