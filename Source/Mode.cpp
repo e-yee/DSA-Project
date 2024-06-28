@@ -8,6 +8,7 @@
 #include "Sort.h"
 #include "Checker.h"
 #include "Sort_KP.h"
+#include "DataGenerator.h"
 
 #define DEBUG_MODE 0
 #define OUTFILE "output.txt"
@@ -123,9 +124,52 @@ void cmpMode(int argc, char* argv[], int cmd)
     cout << "COMPARISION MODE\n";
     cout << "Algorithm: " << argv[2] << " | " << argv[3] << '\n';
 
+    double duration1, duration2;
+    long long cnt_cmp1, cnt_cmp2;
 
+    if (cmd == 4) {
+        return;
+    }
+    else if (cmd == 5) {
+        int n = stoi(argv[4]);
+        int *a = new int[n];
+        int data_type = find(orders.begin(), orders.end(), argv[5]) - orders.begin();
+        
+        generateData(a, n, data_type);
 
+        string filename = "input.txt";
+        writeFile(filename, a, n);
 
+        calcTime(a, n, argv[2], duration1);
+        calcTime(a, n, argv[3], duration2);
+
+        countCmp(a, n, argv[2], cnt_cmp1);
+        countCmp(a, n, argv[3], cnt_cmp2);
+
+        cout << "Input size: " << n << "\n";
+        cout << "Input order: ";
+        switch (data_type) {
+        case 0:
+            cout << "randomized data\n";
+            break;
+        case 1:
+            cout << "nearly sorted data\n";
+            break;
+        case 2:
+            cout << "sorted data\n";
+            break;
+        case 3:
+            cout << "reversed data\n";
+            break;
+        }
+        cout << "-------------------------\n";
+        cout << setprecision(4) << fixed;
+        cout << "Running time: " << duration1 / 1e6 << " (milliseconds)"
+                        << " | " << duration2 / 1e6 << " (milliseconds)\n";
+        cout << "Comparisons: " << cnt_cmp1 << " | " << cnt_cmp2 << "\n";
+
+        delete[] a;
+    }
 
     if (DEBUG_MODE) {
        cerr << "\ncmd: " << cmd << '\n';
@@ -142,12 +186,12 @@ void calcTime(int a[], int n, const string alg, double &duration)
     if (type == 2) bubbleSort(a, n, duration);
     if (type == 3) shakerSort(a, n, duration);
     if (type == 4) shellSort(a, n, duration);
-    // if (type == 5) heapSort(a, n, duration);
+    if (type == 5) heapSort(a, n, duration);
     if (type == 6) mergeSort(a, n, duration);
     if (type == 7) quickSort(a, n, duration);
     if (type == 8) countingSort(a, n, duration);
-    // if (type == 9) radixSort(a, n, duration);
-    // if (type == 10) flashSort(a, n, duration);
+    if (type == 9) radixSort(a, n, duration);
+    if (type == 10) flashSort(a, n, duration);
 }
 
 void countCmp(int a[], int n, const string alg, long long &cnt_cmp)
@@ -159,10 +203,10 @@ void countCmp(int a[], int n, const string alg, long long &cnt_cmp)
     if (type == 2) bubbleSort(a, n, cnt_cmp);
     if (type == 3) shakerSort(a, n, cnt_cmp);
     if (type == 4) shellSort(a, n, cnt_cmp);
-    // if (type == 5) heapSort(a, n, cnt_cmp);
+    if (type == 5) heapSort(a, n, cnt_cmp);
     if (type == 6) mergeSort(a, n, cnt_cmp);
     if (type == 7) quickSort(a, n, cnt_cmp);
     if (type == 8) countingSort(a, n, cnt_cmp);
-    // if (type == 9) radixSort(a, n, cnt_cmp);
-    // if (type == 10) flashSort(a, n, cnt_cmp);
+    if (type == 9) radixSort(a, n, cnt_cmp);
+    if (type == 10) flashSort(a, n, cnt_cmp);
 }
