@@ -62,6 +62,35 @@ void bubbleSort(int a[], int n, long long &cnt_cmp)
     }
 }
 
+void Heapify(int a[], int n, int i, long long &cnt_cmp) 
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (++cnt_cmp && left < n && ++cnt_cmp && a[largest] < a[left])
+        largest = left;
+    if (++cnt_cmp && right < n && ++cnt_cmp && a[largest] < a[right])
+        largest = right;
+    if (++cnt_cmp && largest != i) {
+        swap(a[largest], a[i]);
+        Heapify(a, n, largest, cnt_cmp);
+    }
+}
+
+void heapSort(int a[], int n, long long &cnt_cmp) 
+{
+    cnt_cmp = 0;
+
+    for (int i = n / 2 - 1; ++cnt_cmp && i >= 0; i--)
+        Heapify(a, n, i, cnt_cmp);
+
+    for (int i = n - 1; ++cnt_cmp && i >= 0; i--) {
+        swap(a[0], a[i]);
+        Heapify(a, i, 0, ++cnt_cmp);
+    }
+}
+
 void Merge(int a[], int l, int mid, int r, long long &cnt_cmp)
 {
     vector<int> left_part(a + l, a + mid + 1);
@@ -124,7 +153,98 @@ void countingSort(int a[], int n, long long &cnt_cmp)
     delete[] cnt;
 }
 
+int findMaxPos(int a[], int n, long long &cnt_cmp) 
+{
+    int m = 0;
+    for (int i = 0; ++cnt_cmp && i < n; i++)
+        if (++cnt_cmp && a[i] > a[m])
+            m = i;
+    return m;
+}
 
+void countSort(int a[], int n, int exp, long long &cnt_cmp) 
+{
+    vector<int> output(n, 0);
+    int count[10] = { 0 };
+
+    for (int i = 0; ++cnt_cmp && i < n; i++)
+        ++count[(a[i] / exp) % 10];
+    
+    for (int i = 1; ++cnt_cmp && i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (int i = n - 1; ++cnt_cmp && i >= 0; i--) {
+        output[count[(a[i] / exp) % 10] - 1] = a[i];
+        --count[(a[i] / exp) % 10];
+    }
+
+    for (int i = 0; ++cnt_cmp && i < n; i++)
+        a[i] = output[i];
+}
+
+void radixSort(int a[], int n, long long &cnt_cmp) 
+{   
+    cnt_cmp = 0;
+
+    int maxPos = findMaxPos(a, n, cnt_cmp);
+
+    for (int exp = 1; ++cnt_cmp && a[maxPos] / exp > 1; exp *= 10)
+        countSort(a, n, exp, cnt_cmp);
+}
+
+int findMinPos(int a[], int n, long long &cnt_cmp) 
+{
+    int m = 0;
+    for (int i = 0; ++cnt_cmp && i < n; i++)
+        if (++cnt_cmp && a[i] < a[m])
+            m = i;
+    return m;
+}
+
+void flashSwap(int a[], int n, vector<int> bucket, int minPos, int maxPos, double c, long long &cnt_cmp)
+{
+    int bucketId = bucket.size() - 1;
+    int flash = 0, move = 0, i = 0;
+
+    swap(a[maxPos], a[0]);
+    while(++cnt_cmp && move < n - 1) {
+        while (++cnt_cmp && i > bucket[bucketId - 1]) {
+            ++i;
+            bucketId = c * (a[i] - a[minPos]);
+        }
+
+        flash = a[i];
+        while (++cnt_cmp && i != bucket[bucketId]) {
+            bucketId = c * (a[minPos] - a[i]);
+            --bucket[bucketId];
+            swap(flash, a[bucket[bucketId]]);
+            ++move;
+        }
+    }
+}
+
+void flashSort(int a[], int n, long long &cnt_cmp) 
+{
+    cnt_cmp = 0;
+
+    int m = 0.45 * n;
+    vector<int> bucket(m, 0);
+    int maxPos = findMaxPos(a, n, cnt_cmp);
+    int minPos = findMinPos(a, n, cnt_cmp);
+    double c = (m - 1) / (a[maxPos] - a[minPos]);
+
+    for (int i = 0; ++cnt_cmp && i < n; i++) {
+        int bucketId = c * (a[i] - a[minPos]);
+        ++bucket[bucketId];
+    }
+
+    for (int i = 1; ++cnt_cmp && i < m; i++)
+        bucket[i] = bucket[i - 1];
+
+    flashSwap(a, n, bucket, minPos, maxPos, c, cnt_cmp);
+
+    insertionSort(a, n, cnt_cmp);
+}
 
 // ----------------------- calculate running time -----------------------
 
@@ -188,6 +308,40 @@ void bubbleSort(int a[], int n, double &duration)
         // no need to do anything further
         if (do_swap == false)
             break;
+    }
+
+    auto end_time = system_clock::now();
+    auto elapsed = end_time - start_time;
+    duration = (double)elapsed.count();
+}
+
+void Heapify(int a[], int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && a[largest] < a[left])
+        largest = left;
+    if (right < n && a[largest] < a[right])
+        largest = right;
+    if (largest != i) {
+        swap(a[largest], a[i]);
+        Heapify(a, n, largest);
+    } 
+}
+
+void heapSort(int a[], int n, double &duration) 
+{
+    duration = 0;
+    auto start_time = system_clock::now();
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        Heapify(a, n, i);
+
+    for (int i = n - 1; i >= 0; i--) {
+        swap(a[0], a[i]);
+        Heapify(a, i, 0);
     }
 
     auto end_time = system_clock::now();
@@ -262,6 +416,119 @@ void countingSort(int a[], int n, double &duration)
             a[id++] = x;
 
     delete[] cnt;
+
+    auto end_time = system_clock::now();
+    auto elapsed = end_time - start_time;
+    duration = (double)elapsed.count();
+}
+
+int findMaxPos(int a[], int n) 
+{
+    int m = 0;
+    for (int i = 0; i < n; i++)
+        if (a[i] > a[m])
+            m = i;
+    return m;
+}
+
+void countSort(int a[], int n, int exp) 
+{
+    vector<int> output(n, 0);
+    int count[10] = { 0 };
+
+    for (int i = 0; i < n; i++)
+        ++count[(a[i] / exp) % 10];
+    
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(a[i] / exp) % 10] - 1] = a[i];
+        --count[(a[i] / exp) % 10];
+    }
+
+    for (int i = 0; i < n; i++)
+        a[i] = output[i];
+}
+
+void radixSort(int a[], int n, double &duration) 
+{
+    duration = 0;
+    auto start_time = system_clock::now();
+
+    int maxPos = findMaxPos(a, n);
+
+    for (int exp = 1; a[maxPos] / exp > 1; exp *= 10)
+        countSort(a, n, exp);
+
+    auto end_time = system_clock::now();
+    auto elapsed = end_time - start_time;
+    duration = (double)elapsed.count();
+}
+
+int findMinPos(int a[], int n) 
+{
+    int m = 0;
+    for (int i = 0; i < n; i++)
+        if (a[i] < a[m])
+            m = i;
+    return m;
+}
+
+void flashSwap(int a[], int n, vector<int> bucket, int minPos, int maxPos, double c) 
+{
+    int bucketId = bucket.size() - 1;
+    int flash = 0, move = 0, i = 0;
+
+    swap(a[maxPos], a[0]);
+    while (move < n - 1) {
+        while (i > bucket[bucketId - 1]) {
+            ++i;
+            bucketId = c * (a[i] - a[minPos]);
+        }
+
+        flash = a[i];
+        while (i != bucket[bucketId]) {
+            bucketId = c * (a[i] - a[minPos]);
+            --bucket[bucketId];
+            swap(flash, a[bucket[bucketId]]);
+            ++move;
+        }
+    }
+}
+
+void flashSort(int a[], int n, double &duration) 
+{
+    duration = 0;
+    auto start_time = system_clock::now();
+
+    int m = 0.45 * n;
+    vector<int> bucket(m, 0);
+    int maxPos = findMaxPos(a, n);
+    int minPos = findMinPos(a, n);
+    double c = (m - 1) / (a[maxPos] - a[minPos]);
+
+    for (int i = 0; i < n; i++) {
+        int bucketId = c * (a[i] - a[minPos]);
+        ++bucket[bucketId];
+    }
+
+    for (int i = 1; i < m; i++)
+        bucket[i] += bucket[i - 1];
+
+    flashSwap(a, n, bucket, minPos, maxPos, c);
+
+    for (int i = 1; i < n; i++) {
+        int key = a[i];
+        int j = i - 1;
+
+        while (j >= 0 && key < a[j]) {
+            a[j + 1] = a[j];
+            --j;
+        }
+
+        a[j + 1] = key;
+    }
 
     auto end_time = system_clock::now();
     auto elapsed = end_time - start_time;
