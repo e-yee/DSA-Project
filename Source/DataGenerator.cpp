@@ -75,3 +75,50 @@ void generateData(int a[], int n, int data_type)
 		printf("Error: unknown data type!\n");
 	}
 }
+
+int* createArray(int n)
+{
+    int* a = new int[n];
+    return a;
+}
+
+void deleteArray(int* a)
+{
+    delete[] a;
+}
+
+void generateDataA(int* a, int n, int data_type, string filename)
+{
+    a = createArray(n);
+	switch (data_type)
+	{
+	case 0: // ngẫu nhiên
+		generateRandomData(a, n);
+		break;
+	case 1: // có thứ tự
+		generateSortedData(a, n);
+		break;
+	case 2: // có thứ tự ngược
+		generateReverseData(a, n);
+		break;
+	case 3: // gần như có thứ tự
+		generateNearlySortedData(a, n);
+		break;
+	default:
+		printf("Error: unknown data type!\n");
+        return;
+	}
+
+    ofstream outputFile(filename.c_str());
+    if (outputFile.is_open()) {
+        outputFile << n << endl;
+        for (int i = 0; i < n; i++) {
+            outputFile << a[i] << " ";
+        }
+        outputFile.close();
+        cout << "Data written to file successfully." << endl;
+    } else {
+        cout << "Error opening file." << endl;
+    }
+    deleteArray(a);
+}
