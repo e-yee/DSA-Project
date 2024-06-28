@@ -8,8 +8,10 @@
 #include "Sort.h"
 #include "Checker.h"
 #include "Sort_KP.h"
+#include "DataGenerator.h"
 
 #define DEBUG_MODE 0
+#define INPUTFILE "input.txt"
 #define OUTFILE "output.txt"
 
 using namespace std;
@@ -110,6 +112,151 @@ void algMode(int argc, char* argv[], int cmd)
     else if (cmd == 2) {
         bool para_time = false;
         bool para_comp = false;
+
+        for (int i = 5; i < argc; i++) {
+            para_time |= (strcmp(argv[i], "-time") == 0) | (strcmp(argv[i], "-both") == 0);
+            para_comp |= (strcmp(argv[i], "-comp") == 0) | (strcmp(argv[i], "-both") == 0);
+        }
+
+        string order_type;
+        int n = atoi(argv[3]);
+        int* a1 = new int[n];
+        int* a2 = new int[n];
+
+        if (strcmp(argv[4], "-rand") == 0) {
+            order_type = "Randomized";
+            generateRandomData(a1, n);
+            generateRandomData(a2, n);
+        } else if (strcmp(argv[4], "-nsorted") == 0) {
+            order_type = "Nearly Sorted";
+            generateNearlySortedData(a1, n);
+            generateNearlySortedData(a2, n);
+        } else if (strcmp(argv[4], "-sorted") == 0) {
+            order_type = "Sorted";
+            generateSortedData(a1, n);
+            generateSortedData(a2, n);
+        } else if (strcmp(argv[4], "-rev") == 0) {
+            order_type = "Reversed Sorted";
+            generateReverseData(a1, n);
+            generateReverseData(a2, n);
+        }
+
+        writeFile(INPUTFILE, a1, n);
+
+        cout << "Input size: " << argv[3] << '\n';
+        cout << "Input order: " << order_type << '\n';
+        cout << "-----------------------------\n";
+
+        if (para_time) {
+            double duration;
+            calcTime(a1, n, argv[2], duration);
+            cout << setprecision(4) << fixed;
+            cout << "Running time: " << duration / 1e6 << " (milliseconds)\n";
+
+            if (!is_sorted(a1, a1 + n))
+                quit("The array is not sorted!");
+            
+            /* For debugging */
+            if (DEBUG_MODE) {
+                if (is_sorted(a2, a2 + n))
+                    cerr << "[DEBUG]: The array a1[] is sorted!\n";
+            }
+
+            writeFile(OUTFILE, a1, n);
+        }
+
+        if (para_comp) {
+            long long cnt_cmp;
+            countCmp(a2, n, argv[2], cnt_cmp);
+            cout << "Comparisons: " << cnt_cmp << '\n';
+
+            if (!is_sorted(a2, a2 + n))
+                quit("The array is not sorted!");
+
+            /* For debugging */
+            if (DEBUG_MODE) {
+                if (is_sorted(a2, a2 + n))
+                    cerr << "[DEBUG]: The array a1[] is sorted!\n";
+            }
+
+            writeFile(OUTFILE, a2, n);
+        }
+        delete[] a1;
+        delete[] a2;
+
+    } else if (cmd == 3) {
+        bool para_time = false;
+        bool para_comp = false;
+
+        for (int i = 4; i < argc; i++) {
+            para_time |= (strcmp(argv[i], "-time") == 0) | (strcmp(argv[i], "-both") == 0);
+            para_comp |= (strcmp(argv[i], "-comp") == 0) | (strcmp(argv[i], "-both") == 0);
+        }
+
+        int n = atoi(argv[3]);
+        int* a1 = new int[n];
+        int* a2 = new int[n];
+
+        cout << "Input size: " << argv[3] << '\n';
+
+        string order_type[4] = {"Randomize", "Nearly Sorted", "Sorted", "Reversed"};
+
+        int idx = 0;
+        while (idx < 4) {
+            cout << '\n' << "Input order: " << order_type[idx] << '\n';
+            cout << "-----------------------------\n";
+
+            if (idx == 0) {
+                generateRandomData(a1, n);
+                generateRandomData(a1, n);
+            } else if (idx == 1) {
+                generateNearlySortedData(a1, n);
+                generateNearlySortedData(a2, n);
+            } else if (idx == 2) {
+                generateSortedData(a1, n);
+                generateSortedData(a2, n);
+            } else {
+                generateReverseData(a1, n);
+                generateReverseData(a2, n);
+            }
+
+            string file_name = "input_" + to_string(idx + 1) + ".txt";
+            writeFile(file_name, a1, n);
+
+            if (para_time) {
+                double duration;
+                calcTime(a1, n, argv[2], duration);
+                cout << setprecision(4) << fixed;
+                cout << "Running time: " << duration / 1e6 << " (milliseconds)\n";
+
+                if (!is_sorted(a1, a1 + n))
+                    quit("The array is not sorted!");
+                
+                /* For debugging */
+                if (DEBUG_MODE) {
+                    if (is_sorted(a2, a2 + n))
+                        cerr << "[DEBUG]: The array a1[] is sorted!\n";
+                }
+            }
+
+            if (para_comp) {
+                long long cnt_cmp;
+                countCmp(a2, n, argv[2], cnt_cmp);
+                cout << "Comparisons: " << cnt_cmp << '\n';
+
+                if (!is_sorted(a2, a2 + n))
+                    quit("The array is not sorted!");
+
+                /* For debugging */
+                if (DEBUG_MODE) {
+                    if (is_sorted(a2, a2 + n))
+                        cerr << "[DEBUG]: The array a1[] is sorted!\n";
+                }
+            }
+            ++idx;
+        }
+        delete[] a1;
+        delete[] a2;
     }
 
     /* For debugging */
@@ -123,9 +270,57 @@ void cmpMode(int argc, char* argv[], int cmd)
     cout << "COMPARISION MODE\n";
     cout << "Algorithm: " << argv[2] << " | " << argv[3] << '\n';
 
+    if (cmd == 4) {
+        int n = 0;
+        int* a1 = readFile(argv[4], n); //sort_time 1
+        int* a2 = readFile(argv[4], n); //sort_comp 1
+        int* a3 = readFile(argv[4], n); //sort_time 2
+        int* a4 = readFile(argv[4], n); //sort_comp 2
 
+        cout << "Input file: " << argv[4] << '\n';
+        cout << "Input size: " << n << '\n';
+        cout << "-----------------------------\n";
+        
+        //time
+        double duration_1, duration_2;
+        calcTime(a1, n, argv[2], duration_1);
+        calcTime(a3, n, argv[3], duration_2);
+        cout << setprecision(4) << fixed;
+        cout << "Running time: " << duration_1 / 1e6 << " (milliseconds) | " << 
+        duration_1 / 1e6 << " (milliseconds)\n";
 
+        if (!is_sorted(a1, a1 + n))
+            quit("The array is not sorted!");
+        
+        /* For debugging */
+        if (DEBUG_MODE) {
+            if (is_sorted(a3, a3 + n))
+                cerr << "[DEBUG]: The array a1[] is sorted!\n";
+        }
 
+        //compare
+        long long cnt_cmp_1, cnt_cmp_2;
+                countCmp(a2, n, argv[2], cnt_cmp_1);
+                countCmp(a4, n, argv[3], cnt_cmp_2);
+                cout << "Comparisons: " << cnt_cmp_1 << " | " << cnt_cmp_2 << '\n';
+
+        if (!is_sorted(a2, a2 + n))
+            quit("The array is not sorted!");
+        
+        /* For debugging */
+        if (DEBUG_MODE) {
+            if (is_sorted(a4, a4 + n))
+                cerr << "[DEBUG]: The array a1[] is sorted!\n";
+        }
+
+        delete[] a1;
+        delete[] a2;
+        delete[] a3;
+        delete[] a4;
+
+    } else if (cmd == 5) {
+
+    }
 
     if (DEBUG_MODE) {
        cerr << "\ncmd: " << cmd << '\n';
