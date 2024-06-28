@@ -8,6 +8,7 @@
 #include "Sort.h"
 #include "Checker.h"
 #include "Sort_KP.h"
+#include "DataGenerator.h"
 
 #define DEBUG_MODE 0
 #define OUTFILE "output.txt"
@@ -133,6 +134,8 @@ void cmpMode(int argc, char* argv[], int cmd)
         int n = stoi(argv[4]);
         int *a = new int[n];
         int data_type = find(orders.begin(), orders.end(), argv[5]) - orders.begin();
+        
+        generateData(a, n, data_type);
 
         string filename = "input.txt";
         writeFile(filename, a, n);
