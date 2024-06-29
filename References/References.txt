@@ -1,6 +1,6 @@
 1. Khoi's part
 - Quick Sort:
-+ Links: https://www.geeksforgeeks.org/quick-sort-algorithm/
++ Links: https://www.geeksforgeeks.org/implement-quicksort-with-first-element-as-pivot/
 + Date: 27/06/2024
 
 - Shaker Sort:

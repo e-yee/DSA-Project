@@ -8,21 +8,12 @@ using namespace std::chrono;
 
 int Partition(int a[], int low, int high, long long& cnt_cmp)
 {
-    int pos = low;
-
-    if ((++cnt_cmp && a[high / 2] >= min(a[low], a[high - 1])) && (++cnt_cmp && a[high / 2] <= max(a[low], a[high])))
-        pos = high / 2;
-    if ((++cnt_cmp && a[high] >= min(a[low], a[high / 2])) && (++cnt_cmp && a[high] <= max(a[low], a[high / 2])))
-        pos = high;
-
-    swap(a[low], a[pos]);
-
     int pivot = low;
     int lastS1 = low;
     int first_unknown = low + 1;
  
     while (++cnt_cmp && first_unknown <= high) {
-        if (++cnt_cmp && a[first_unknown] < a[pivot]) {
+        if (++cnt_cmp && a[first_unknown] <= a[pivot]) {
             swap(a[lastS1 + 1], a[first_unknown]);
             lastS1++;
         }

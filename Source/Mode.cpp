@@ -48,6 +48,12 @@ void writeFile(string filename, int a[], int n)
     fout.close();
 }
 
+void copyArray(int* dest, int* source, int n) {
+    for (int i = 0; i < n; i++) {
+        dest[i] = source[i];
+    }
+}
+
 void algMode(int argc, char* argv[], int cmd)
 {
     cout << "ALGORITHM MODE\n";
@@ -126,21 +132,18 @@ void algMode(int argc, char* argv[], int cmd)
         if (strcmp(argv[4], "-rand") == 0) {
             order_type = "Randomized";
             generateRandomData(a1, n);
-            generateRandomData(a2, n);
         } else if (strcmp(argv[4], "-nsorted") == 0) {
             order_type = "Nearly Sorted";
             generateNearlySortedData(a1, n);
-            generateNearlySortedData(a2, n);
         } else if (strcmp(argv[4], "-sorted") == 0) {
             order_type = "Sorted";
             generateSortedData(a1, n);
-            generateSortedData(a2, n);
         } else if (strcmp(argv[4], "-rev") == 0) {
             order_type = "Reversed Sorted";
             generateReverseData(a1, n);
-            generateReverseData(a2, n);
         }
 
+        copyArray(a2, a1, n);
         writeFile(INPUTFILE, a1, n);
 
         cout << "Input size: " << argv[3] << '\n';
@@ -208,18 +211,15 @@ void algMode(int argc, char* argv[], int cmd)
 
             if (idx == 0) {
                 generateRandomData(a1, n);
-                generateRandomData(a1, n);
             } else if (idx == 1) {
                 generateNearlySortedData(a1, n);
-                generateNearlySortedData(a2, n);
             } else if (idx == 2) {
                 generateSortedData(a1, n);
-                generateSortedData(a2, n);
             } else {
                 generateReverseData(a1, n);
-                generateReverseData(a2, n);
             }
 
+            copyArray(a2, a1, n);
             string file_name = "input_" + to_string(idx + 1) + ".txt";
             writeFile(file_name, a1, n);
 
