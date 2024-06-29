@@ -164,7 +164,7 @@ int findMaxPos(int a[], int n, long long &cnt_cmp)
 
 void countSort(int a[], int n, int exp, long long &cnt_cmp) 
 {
-    vector<int> output(n, 0);
+    int *output = new int[n];
     int count[10] = { 0 };
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
@@ -180,6 +180,8 @@ void countSort(int a[], int n, int exp, long long &cnt_cmp)
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
         a[i] = output[i];
+
+    delete[] output;
 }
 
 void radixSort(int a[], int n, long long &cnt_cmp) 
@@ -201,9 +203,9 @@ int findMinPos(int a[], int n, long long &cnt_cmp)
     return m;
 }
 
-void flashSwap(int a[], int n, vector<int> bucket, int minPos, int maxPos, double c, long long &cnt_cmp)
+void flashSwap(int a[], int n, int bucket[], int m, int minPos, int maxPos, double c, long long &cnt_cmp)
 {
-    int bucketId = bucket.size() - 1;
+    int bucketId = m - 1;
     int flash = 0, move = 0, i = 0;
 
     swap(a[maxPos], a[0]);
@@ -228,10 +230,13 @@ void flashSort(int a[], int n, long long &cnt_cmp)
     cnt_cmp = 0;
 
     int m = 0.45 * n;
-    vector<int> bucket(m, 0);
+    int *bucket = new int[m];
     int maxPos = findMaxPos(a, n, cnt_cmp);
     int minPos = findMinPos(a, n, cnt_cmp);
     double c = (m - 1) / (a[maxPos] - a[minPos]);
+
+    for (int i = 0; ++cnt_cmp && i < m; i++)
+        bucket[i] = 0;
 
     for (int i = 0; ++cnt_cmp && i < n; i++) {
         int bucketId = c * (a[i] - a[minPos]);
@@ -241,9 +246,11 @@ void flashSort(int a[], int n, long long &cnt_cmp)
     for (int i = 1; ++cnt_cmp && i < m; i++)
         bucket[i] = bucket[i - 1];
 
-    flashSwap(a, n, bucket, minPos, maxPos, c, cnt_cmp);
+    flashSwap(a, n, bucket, m, minPos, maxPos, c, cnt_cmp);
 
     insertionSort(a, n, cnt_cmp);
+
+    delete[] bucket;
 }
 
 // ----------------------- calculate running time -----------------------
@@ -433,7 +440,7 @@ int findMaxPos(int a[], int n)
 
 void countSort(int a[], int n, int exp) 
 {
-    vector<int> output(n, 0);
+    int *output = new int[n];
     int count[10] = { 0 };
 
     for (int i = 0; i < n; i++)
@@ -449,6 +456,8 @@ void countSort(int a[], int n, int exp)
 
     for (int i = 0; i < n; i++)
         a[i] = output[i];
+
+    delete[] output;
 }
 
 void radixSort(int a[], int n, double &duration) 
@@ -475,9 +484,9 @@ int findMinPos(int a[], int n)
     return m;
 }
 
-void flashSwap(int a[], int n, vector<int> bucket, int minPos, int maxPos, double c) 
+void flashSwap(int a[], int n, int bucket[], int m, int minPos, int maxPos, double c) 
 {
-    int bucketId = bucket.size() - 1;
+    int bucketId = m - 1;
     int flash = 0, move = 0, i = 0;
 
     swap(a[maxPos], a[0]);
@@ -503,10 +512,13 @@ void flashSort(int a[], int n, double &duration)
     auto start_time = system_clock::now();
 
     int m = 0.45 * n;
-    vector<int> bucket(m, 0);
+    int *bucket = new int[m];
     int maxPos = findMaxPos(a, n);
     int minPos = findMinPos(a, n);
     double c = (m - 1) / (a[maxPos] - a[minPos]);
+
+    for (int i = 0; i < m; i++)
+        bucket[i] = 0;
 
     for (int i = 0; i < n; i++) {
         int bucketId = c * (a[i] - a[minPos]);
@@ -516,7 +528,7 @@ void flashSort(int a[], int n, double &duration)
     for (int i = 1; i < m; i++)
         bucket[i] += bucket[i - 1];
 
-    flashSwap(a, n, bucket, minPos, maxPos, c);
+    flashSwap(a, n, bucket, m, minPos, maxPos, c);
 
     for (int i = 1; i < n; i++) {
         int key = a[i];
@@ -529,6 +541,8 @@ void flashSort(int a[], int n, double &duration)
 
         a[j + 1] = key;
     }
+
+    delete[] bucket;
 
     auto end_time = system_clock::now();
     auto elapsed = end_time - start_time;

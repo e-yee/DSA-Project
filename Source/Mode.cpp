@@ -320,13 +320,21 @@ void cmpMode(int argc, char* argv[], int cmd)
 
     } else if (cmd == 5) {
         int n = stoi(argv[4]);
-        int *a = new int[n];
+        int *a1 = new int[n];
+        int *a2 = new int[n];
+        int *a3 = new int[n];
+        int *a4 = new int[n];
         int data_type = find(orders.begin(), orders.end(), argv[5]) - orders.begin();
 
-        generateData(a, n, data_type);
+        generateData(a1, n, data_type);
+        for (int i = 0; i < n; i++) {
+            a2[i] = a1[i];
+            a3[i] = a1[i];
+            a4[i] = a1[i];
+        }
 
         string filename = "input.txt";
-        writeFile(filename, a, n);
+        writeFile(filename, a1, n);
 
         cout << "Input size: " << n << "\n";
         cout << "Input order: ";
@@ -346,19 +354,41 @@ void cmpMode(int argc, char* argv[], int cmd)
         }
         cout << "-------------------------\n";
         
+
         double duration_1, duration_2;
-        calcTime(a, n, argv[2], duration_1);
-        calcTime(a, n, argv[3], duration_2);
+        calcTime(a1, n, argv[2], duration_1);
+        calcTime(a2, n, argv[3], duration_2);
         cout << setprecision(4) << fixed;
         cout << "Running time: " << duration_1 / 1e6 << " (milliseconds)" 
                         << " | " << duration_2 / 1e6 << " (milliseconds)\n";
 
+        if (!is_sorted(a1, a1 + n))
+            quit("The array is not sorted!");
+        
+        /* For debugging */
+        if (DEBUG_MODE) {
+            if (is_sorted(a2, a2 + n))
+                cerr << "[DEBUG]: The array a1[] is sorted!\n";
+        }
+
         long long cnt_cmp_1, cnt_cmp_2;
-        countCmp(a, n, argv[2], cnt_cmp_1);
-        countCmp(a, n, argv[3], cnt_cmp_2);
+        countCmp(a3, n, argv[2], cnt_cmp_1);
+        countCmp(a4, n, argv[3], cnt_cmp_2);
         cout << "Comparisons: " << cnt_cmp_1 << " | " << cnt_cmp_2;
 
-        delete[] a;
+        if (!is_sorted(a3, a3 + n))
+            quit("The array is not sorted!");
+        
+        /* For debugging */
+        if (DEBUG_MODE) {
+            if (is_sorted(a4, a4 + n))
+                cerr << "[DEBUG]: The array a1[] is sorted!\n";
+        }
+
+        delete[] a1;
+        delete[] a2;
+        delete[] a3;
+        delete[] a4;
     }
 
     if (DEBUG_MODE) {
