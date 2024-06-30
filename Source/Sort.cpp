@@ -190,7 +190,7 @@ void radixSort(int a[], int n, long long &cnt_cmp)
 
     int maxPos = findMaxPos(a, n, cnt_cmp);
 
-    for (int exp = 1; ++cnt_cmp && a[maxPos] / exp > 1; exp *= 10)
+    for (int exp = 1; ++cnt_cmp && a[maxPos] / exp > 0; exp *= 10)
         countSort(a, n, exp, cnt_cmp);
 }
 
@@ -467,7 +467,7 @@ void radixSort(int a[], int n, double &duration)
 
     int maxPos = findMaxPos(a, n);
 
-    for (int exp = 1; a[maxPos] / exp > 1; exp *= 10)
+    for (int exp = 1; a[maxPos] / exp > 0; exp *= 10)
         countSort(a, n, exp);
 
     auto end_time = system_clock::now();
