@@ -8,12 +8,20 @@ using namespace std::chrono;
 
 int Partition(int a[], int low, int high, long long& cnt_cmp)
 {
+    int median = a[low] + a[high] + a[(low + high) / 2] - max(max(a[low], a[high]), a[(low + high) / 2]) - min(min(a[low], a[high]), a[(low + high) / 2]);
+    int pos = low;
+    if (a[median] == high) pos = high;
+    if (a[median] == (low + high) / 2) pos = (low + high) / 2;
+    swap(a[low], a[pos]);
+
+    cnt_cmp += 4;
+
     int pivot = low;
     int lastS1 = low;
     int first_unknown = low + 1;
  
     while (++cnt_cmp && first_unknown <= high) {
-        if (++cnt_cmp && a[first_unknown] <= a[pivot]) {
+        if (++cnt_cmp && a[first_unknown] < a[pivot]) {
             swap(a[lastS1 + 1], a[first_unknown]);
             lastS1++;
         }
@@ -22,6 +30,15 @@ int Partition(int a[], int low, int high, long long& cnt_cmp)
     swap(a[pivot], a[lastS1]);
     
     return lastS1;
+    // int pivot = low;
+
+    // int k = high;
+    // for (int i = high; ++cnt_cmp && i >= low; i--) {
+    //     if (++cnt_cmp && a[i] > a[pivot])
+    //         swap(a[i], a[k--]);
+    // }
+    // swap(a[low], a[k]);
+    // return k;
 }
 
 void quickSortRecursion(int a[], int low, int high, long long& cnt_cmp)
@@ -45,7 +62,7 @@ void shakerSort(int a[], int n, long long& cnt_cmp)
     bool swapped = true;
     int start = 0, end = n - 1;
     
-    while (swapped) {
+    while (++cnt_cmp && swapped == true) {
         swapped = false;
 
         for (int i = start; ++cnt_cmp && i < end; i++) {
@@ -55,7 +72,7 @@ void shakerSort(int a[], int n, long long& cnt_cmp)
             }
         }
 
-        if (!swapped) break;
+        if (++cnt_cmp && swapped == false) break;
 
         swapped = false;
         end--;
@@ -78,7 +95,7 @@ void shellSort(int arr[], int n, long long& cnt_cmp) {
         for (int i = gap; ++cnt_cmp && i < n; i += 1) {
             int temp = arr[i];
             int j;
-            for (j = i; ++cnt_cmp && j >= gap && arr[j - gap] > temp; j -= gap) {
+            for (j = i; (++cnt_cmp && j >= gap) && (++cnt_cmp && arr[j - gap] > temp); j -= gap) {
                 arr[j] = arr[j - gap];
             }
             arr[j] = temp;
@@ -92,13 +109,10 @@ void shellSort(int arr[], int n, long long& cnt_cmp) {
 
 int Partition(int a[], int low, int high)
 {
+    int median = a[low] + a[high] + a[(low + high) / 2] - max(max(a[low], a[high]), a[(low + high) / 2]) - min(min(a[low], a[high]), a[(low + high) / 2]);
     int pos = low;
-
-    if (a[high / 2] >= min(a[low], a[high - 1]) && a[high / 2] <= max(a[low], a[high]))
-        pos = high / 2;
-    if (a[high] >= min(a[low], a[high / 2]) && a[high] <= max(a[low], a[high / 2]))
-        pos = high;
-
+    if (a[median] == high) pos = high;
+    if (a[median] == (low + high) / 2) pos = (low + high) / 2;
     swap(a[low], a[pos]);
 
     int pivot = low;
@@ -115,6 +129,15 @@ int Partition(int a[], int low, int high)
     swap(a[pivot], a[lastS1]);
 
     return lastS1;
+
+    // int pivot = low;
+    // int k = high;
+    // for (int i = high; i >= low; i--) {
+    //     if (a[i] > a[pivot])
+    //         swap(a[i], a[k--]);
+    // }
+    // swap(a[low], a[k]);
+    // return k;
 }
 
 void quickSortRecursion(int a[], int low, int high)
@@ -146,7 +169,7 @@ void shakerSort(int a[], int n, double& duration)
     bool swapped = true;
     int start = 0, end = n - 1;
 
-    while (swapped) {
+    while (swapped == true) {
         swapped = false;
 
         for (int i = start; i < end; i++) {
@@ -156,7 +179,7 @@ void shakerSort(int a[], int n, double& duration)
             }
         }
 
-        if (!swapped) break;
+        if (swapped == false) break;
 
         swapped = false;
         end--;
@@ -185,7 +208,7 @@ void shellSort(int arr[], int n, double& duration)
         for (int i = gap; i < n; i += 1) {
             int temp = arr[i];
             int j;
-            for (j = i; arr[j - gap] > temp; j -= gap) {
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
                 arr[j] = arr[j - gap];
             }
             arr[j] = temp;

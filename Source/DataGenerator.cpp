@@ -48,11 +48,20 @@ void generateNearlySortedData(int a[], int n)
 
 	srand((unsigned int)time(NULL));
 
-	for (int i = 0; i < 10; i++) {
-		int r1 = rand() % n;
-		int r2 = rand() % n;
-		Swap(a[r1], a[r2]);
-	}
+	// for (int i = 0; i < 10; i++) {
+	// 	int r1 = rand() % n;
+	// 	int r2 = rand() % n;
+	// 	Swap(a[r1], a[r2]);
+	// }
+
+	int r1, r2;
+	r1 = r2 = 0;
+	do {
+		r1 = rand() % n;
+        r2 = rand() % n;
+	} while (r1 == r2);
+
+	swap(a[r1], a[r2]);
 }
 
 void generateData(int a[], int n, int data_type)

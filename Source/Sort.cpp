@@ -110,8 +110,8 @@ void Merge(int a[], int l, int mid, int r, long long &cnt_cmp)
         }
     }
 
-    while (i < left_part.size()) a[id++] = left_part[i++];
-    while (j < right_part.size()) a[id++] = right_part[j++];
+    while (++cnt_cmp && i < left_part.size()) a[id++] = left_part[i++];
+    while (++cnt_cmp && j < right_part.size()) a[id++] = right_part[j++];
 }
 
 void mergeSortRecursion(int a[], int l, int r, long long &cnt_cmp)
@@ -165,17 +165,17 @@ int findMaxPos(int a[], int n, long long &cnt_cmp)
 void countSort(int a[], int n, int exp, long long &cnt_cmp) 
 {
     int *output = new int[n];
-    int count[10] = { 0 };
+    int cnt[10] = { 0 };
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
-        ++count[(a[i] / exp) % 10];
+        ++cnt[(a[i] / exp) % 10];
     
     for (int i = 1; ++cnt_cmp && i < 10; i++)
-        count[i] += count[i - 1];
+        cnt[i] += cnt[i - 1];
 
     for (int i = n - 1; ++cnt_cmp && i >= 0; i--) {
-        output[count[(a[i] / exp) % 10] - 1] = a[i];
-        --count[(a[i] / exp) % 10];
+        output[cnt[(a[i] / exp) % 10] - 1] = a[i];
+        --cnt[(a[i] / exp) % 10];
     }
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
@@ -203,23 +203,23 @@ int findMinPos(int a[], int n, long long &cnt_cmp)
     return m;
 }
 
-void flashSwap(int a[], int n, int bucket[], int m, int minPos, int maxPos, double c, long long &cnt_cmp)
+void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, double c, long long &cnt_cmp)
 {
-    int bucketId = m - 1;
+    int bucket_id = m - 1;
     int flash = 0, move = 0, i = 0;
 
-    swap(a[maxPos], a[0]);
+    swap(a[max_pos], a[0]);
     while(++cnt_cmp && move < n - 1) {
-        while (++cnt_cmp && i > bucket[bucketId - 1]) {
+        while (++cnt_cmp && i > bucket[bucket_id - 1]) {
             ++i;
-            bucketId = c * (a[i] - a[minPos]);
+            bucket_id = c * (a[i] - a[min_pos]);
         }
 
         flash = a[i];
-        while (++cnt_cmp && i != bucket[bucketId]) {
-            bucketId = c * (a[minPos] - a[i]);
-            --bucket[bucketId];
-            swap(flash, a[bucket[bucketId]]);
+        while (++cnt_cmp && i != bucket[bucket_id]) {
+            bucket_id = c * (a[min_pos] - a[i]);
+            --bucket[bucket_id];
+            swap(flash, a[bucket[bucket_id]]);
             ++move;
         }
     }
@@ -231,22 +231,22 @@ void flashSort(int a[], int n, long long &cnt_cmp)
 
     int m = 0.45 * n;
     int *bucket = new int[m];
-    int maxPos = findMaxPos(a, n, cnt_cmp);
-    int minPos = findMinPos(a, n, cnt_cmp);
-    double c = (m - 1) / (a[maxPos] - a[minPos]);
+    int max_pos = findMaxPos(a, n, cnt_cmp);
+    int min_pos = findMinPos(a, n, cnt_cmp);
+    double c = (m - 1) / (a[max_pos] - a[min_pos]);
 
     for (int i = 0; ++cnt_cmp && i < m; i++)
         bucket[i] = 0;
 
     for (int i = 0; ++cnt_cmp && i < n; i++) {
-        int bucketId = c * (a[i] - a[minPos]);
-        ++bucket[bucketId];
+        int bucket_id = c * (a[i] - a[min_pos]);
+        ++bucket[bucket_id];
     }
 
     for (int i = 1; ++cnt_cmp && i < m; i++)
         bucket[i] = bucket[i - 1];
 
-    flashSwap(a, n, bucket, m, minPos, maxPos, c, cnt_cmp);
+    flashSwap(a, n, bucket, m, min_pos, max_pos, c, cnt_cmp);
 
     insertionSort(a, n, cnt_cmp);
 
@@ -441,17 +441,17 @@ int findMaxPos(int a[], int n)
 void countSort(int a[], int n, int exp) 
 {
     int *output = new int[n];
-    int count[10] = { 0 };
+    int cnt[10] = { 0 };
 
     for (int i = 0; i < n; i++)
-        ++count[(a[i] / exp) % 10];
+        ++cnt[(a[i] / exp) % 10];
     
     for (int i = 1; i < 10; i++)
-        count[i] += count[i - 1];
+        cnt[i] += cnt[i - 1];
 
     for (int i = n - 1; i >= 0; i--) {
-        output[count[(a[i] / exp) % 10] - 1] = a[i];
-        --count[(a[i] / exp) % 10];
+        output[cnt[(a[i] / exp) % 10] - 1] = a[i];
+        --cnt[(a[i] / exp) % 10];
     }
 
     for (int i = 0; i < n; i++)
@@ -465,9 +465,9 @@ void radixSort(int a[], int n, double &duration)
     duration = 0;
     auto start_time = system_clock::now();
 
-    int maxPos = findMaxPos(a, n);
+    int max_pos = findMaxPos(a, n);
 
-    for (int exp = 1; a[maxPos] / exp > 0; exp *= 10)
+    for (int exp = 1; a[max_pos] / exp > 0; exp *= 10)
         countSort(a, n, exp);
 
     auto end_time = system_clock::now();
@@ -484,23 +484,23 @@ int findMinPos(int a[], int n)
     return m;
 }
 
-void flashSwap(int a[], int n, int bucket[], int m, int minPos, int maxPos, double c) 
+void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, double c) 
 {
-    int bucketId = m - 1;
+    int bucket_id = m - 1;
     int flash = 0, move = 0, i = 0;
 
-    swap(a[maxPos], a[0]);
+    swap(a[max_pos], a[0]);
     while (move < n - 1) {
-        while (i > bucket[bucketId - 1]) {
+        while (i > bucket[bucket_id - 1]) {
             ++i;
-            bucketId = c * (a[i] - a[minPos]);
+            bucket_id = c * (a[i] - a[min_pos]);
         }
 
         flash = a[i];
-        while (i != bucket[bucketId]) {
-            bucketId = c * (a[i] - a[minPos]);
-            --bucket[bucketId];
-            swap(flash, a[bucket[bucketId]]);
+        while (i != bucket[bucket_id]) {
+            bucket_id = c * (a[i] - a[min_pos]);
+            --bucket[bucket_id];
+            swap(flash, a[bucket[bucket_id]]);
             ++move;
         }
     }
@@ -513,22 +513,22 @@ void flashSort(int a[], int n, double &duration)
 
     int m = 0.45 * n;
     int *bucket = new int[m];
-    int maxPos = findMaxPos(a, n);
-    int minPos = findMinPos(a, n);
-    double c = (m - 1) / (a[maxPos] - a[minPos]);
+    int max_pos = findMaxPos(a, n);
+    int min_pos = findMinPos(a, n);
+    double c = (m - 1) / (a[max_pos] - a[min_pos]);
 
     for (int i = 0; i < m; i++)
         bucket[i] = 0;
 
     for (int i = 0; i < n; i++) {
-        int bucketId = c * (a[i] - a[minPos]);
+        int bucketId = c * (a[i] - a[min_pos]);
         ++bucket[bucketId];
     }
 
     for (int i = 1; i < m; i++)
         bucket[i] += bucket[i - 1];
 
-    flashSwap(a, n, bucket, m, minPos, maxPos, c);
+    flashSwap(a, n, bucket, m, min_pos, max_pos, c);
 
     for (int i = 1; i < n; i++) {
         int key = a[i];
