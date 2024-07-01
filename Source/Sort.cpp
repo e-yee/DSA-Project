@@ -248,7 +248,17 @@ void flashSort(int a[], int n, long long &cnt_cmp)
 
     flashSwap(a, n, bucket, m, min_pos, max_pos, c, cnt_cmp);
 
-    insertionSort(a, n, cnt_cmp);
+    for (int i = 1; ++cnt_cmp && i < n; i++) {
+        int key = a[i];
+        int j = i - 1;
+
+        while (++cnt_cmp && j >= 0 && ++cnt_cmp && key < a[j]) {
+            a[j + 1] = a[j];
+            --j;
+        }
+
+        a[j + 1] = key;
+    }
 
     delete[] bucket;
 }
