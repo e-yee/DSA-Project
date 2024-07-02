@@ -10,8 +10,8 @@ int Partition(int a[], int low, int high, long long& cnt_cmp)
 {
     int median = a[low] + a[high] + a[(low + high) / 2] - max(max(a[low], a[high]), a[(low + high) / 2]) - min(min(a[low], a[high]), a[(low + high) / 2]);
     int pos = low;
-    if (a[median] == high) pos = high;
-    if (a[median] == (low + high) / 2) pos = (low + high) / 2;
+    if (median == a[high]) pos = high;
+    if (median == a[(low + high) / 2]) pos = (low + high) / 2;
     swap(a[low], a[pos]);
 
     cnt_cmp += 4;
@@ -30,15 +30,20 @@ int Partition(int a[], int low, int high, long long& cnt_cmp)
     swap(a[pivot], a[lastS1]);
     
     return lastS1;
-    // int pivot = low;
-
-    // int k = high;
-    // for (int i = high; ++cnt_cmp && i >= low; i--) {
-    //     if (++cnt_cmp && a[i] > a[pivot])
-    //         swap(a[i], a[k--]);
+    // int pivot = a[high];
+    
+    // int i = (low - 1);
+    
+    // for (int j = low; ++cnt_cmp && j <= high - 1; j++)
+    // {
+    //     if (++cnt_cmp && a[j] < pivot)
+    //     {
+    //     i++;
+    //     swap(a[i], a[j]);
+    //     }
     // }
-    // swap(a[low], a[k]);
-    // return k;
+    // swap(a[i + 1], a[high]);
+    // return (i + 1);
 }
 
 void quickSortRecursion(int a[], int low, int high, long long& cnt_cmp)
@@ -111,8 +116,8 @@ int Partition(int a[], int low, int high)
 {
     int median = a[low] + a[high] + a[(low + high) / 2] - max(max(a[low], a[high]), a[(low + high) / 2]) - min(min(a[low], a[high]), a[(low + high) / 2]);
     int pos = low;
-    if (a[median] == high) pos = high;
-    if (a[median] == (low + high) / 2) pos = (low + high) / 2;
+    if (median == a[high]) pos = high;
+    if (median == a[(low + high) / 2]) pos = (low + high) / 2;
     swap(a[low], a[pos]);
 
     int pivot = low;
@@ -130,14 +135,23 @@ int Partition(int a[], int low, int high)
 
     return lastS1;
 
-    // int pivot = low;
-    // int k = high;
-    // for (int i = high; i >= low; i--) {
-    //     if (a[i] > a[pivot])
-    //         swap(a[i], a[k--]);
+    // int pivot = a[high];
+    // //Index of smaller element and Indicate
+    // //the right position of pivot found so far
+    // int i = (low - 1);
+    
+    // for(int j = low; j <= high - 1; j++)
+    // {
+    //     //If current element is smaller than the pivot
+    //     if (a[j] < pivot)
+    //     {
+    //     //Increment index of smaller element
+    //     i++;
+    //     swap (a[i], a[j]);
+    //     }
     // }
-    // swap(a[low], a[k]);
-    // return k;
+    // swap (a[i + 1], a[high]);
+    // return (i + 1);
 }
 
 void quickSortRecursion(int a[], int low, int high)
@@ -154,6 +168,7 @@ void quickSort(int a[], int n, double& duration)
     duration = 0;
     auto time_start = system_clock::now();
 
+    cout << "Hello";
     quickSortRecursion(a, 0, n - 1);
 
     auto time_end = system_clock::now();
