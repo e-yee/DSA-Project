@@ -219,7 +219,7 @@ void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, do
         flash = a[i];
         if (++cnt_cmp && bucket_id < 0) break;
         while (++cnt_cmp && i != bucket[bucket_id]) {
-            bucket_id = c * (a[min_pos] - a[i]);
+            bucket_id = c * (a[i] - a[min_pos]);
             int hold = a[k = --bucket[bucket_id]];
             a[k] = flash;
             flash = hold;
