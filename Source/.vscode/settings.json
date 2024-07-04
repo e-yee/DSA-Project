@@ -5,6 +5,8 @@
         "xstring": "cpp",
         "ios": "cpp",
         "iomanip": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "utility": "cpp",
+        "ostream": "cpp"
     }
 }
