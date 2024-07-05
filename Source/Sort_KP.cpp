@@ -15,31 +15,22 @@ int Partition(int a[], int low, int high, long long& cnt_cmp)
     int pos = low;
     if (++cnt_cmp && median == a[high]) pos = high;
     if (++cnt_cmp && median == a[(int) (low + high) / 2]) pos = (int) (low + high) / 2;
-    int tmp = a[low];
-    a[low] = a[pos];    
-    a[pos] = tmp;
-    // swap(a[low], a[pos]);
+    swap(a[low], a[pos]);
 
     int pivot = low;
-    int lastS1 = low;
+    int last_S1 = low;
     int first_unknown = low + 1;
  
     while (++cnt_cmp && first_unknown <= high) {
         if (++cnt_cmp && a[first_unknown] < a[pivot]) {
-            int temp = a[lastS1 + 1];
-            a[lastS1 + 1] = a[first_unknown];
-            a[first_unknown] = temp;
-            // swap(a[lastS1 + 1], a[first_unknown]);
-            lastS1++;
+            swap(a[last_S1 + 1], a[first_unknown]);
+            last_S1++;
         }
         first_unknown++;
     }
-    tmp = a[pivot];
-    a[pivot] = a[lastS1];
-    a[lastS1] = tmp;
-    // swap(a[pivot], a[lastS1]);
+    swap(a[pivot], a[last_S1]);
     
-    return lastS1;
+    return last_S1;
 }
 
 void quickSortRecursion(int a[], int low, int high, long long& cnt_cmp)
@@ -121,19 +112,19 @@ int Partition(int a[], int low, int high)
     swap(a[low], a[pos]);
 
     int pivot = low;
-    int lastS1 = low;
+    int last_S1 = low;
     int first_unknown = low + 1;
     
     while (first_unknown <= high) {
         if (a[first_unknown] < a[pivot]) {
-            swap(a[lastS1 + 1], a[first_unknown]);
-            lastS1++;
+            swap(a[last_S1 + 1], a[first_unknown]);
+            last_S1++;
         }
         first_unknown++;
     }
-    swap(a[pivot], a[lastS1]);
+    swap(a[pivot], a[last_S1]);
 
-    return lastS1;
+    return last_S1;
 }
 
 void quickSortRecursion(int a[], int low, int high)

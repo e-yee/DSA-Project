@@ -1,15 +1,19 @@
 1. Khoi's part
 - Quick Sort:
-+ Links: https://www.geeksforgeeks.org/implement-quicksort-with-first-element-as-pivot/
-+ Date: 27/06/2024
++ Links: https://www.geeksforgeeks.org/implement-quicksort-with-first-element-as-pivot/ (27/06/2024)
+		 https://www.bing.com/chat?q=Microsoft+Copilot&FORM=hpcodx (05/07/2024)
+		 https://www.geeksforgeeks.org/time-and-space-complexity-analysis-of-quick-sort/ (05/07/2024)
++ Date: 
 
 - Shaker Sort:
 + Links: https://www.geeksforgeeks.org/cocktail-sort/
 + Date: 27/06/2024
 
 - Shell Sort:
-+ Links: https://www.geeksforgeeks.org/shellsort/
-+ Date: 27/06/2024
++ Links: https://www.geeksforgeeks.org/shellsort/ (27/06/2024)
+		 https://en.wikipedia.org/wiki/Shellsort (05/07/2024)
+
++ Date:
 2. Quan's part
 
 3. Phu's part
