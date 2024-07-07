@@ -9,6 +9,8 @@ const vector<string> inps = {"input.txt", "input_1.txt", "input_2.txt", "input_3
 const vector<string> paras = {"-time", "-comp", "-both"};
 const vector<string> orders = {"-rand", "-nsorted", "-sorted", "-rev"};
 
+string toString(int n);
+
 void quit(const string message);
 
 bool isMode(const string s);

@@ -7,7 +7,6 @@
 #include "Mode.h"
 #include "Sort.h"
 #include "Checker.h"
-#include "Sort_KP.h"
 #include "DataGenerator.h"
 
 #define DEBUG_MODE 0
@@ -48,7 +47,8 @@ void writeFile(string filename, int a[], int n)
     fout.close();
 }
 
-void copyArray(int* dest, int* source, int n) {
+void copyArray(int* dest, int* source, int n)
+{
     for (int i = 0; i < n; i++) {
         dest[i] = source[i];
     }
@@ -161,7 +161,7 @@ void algMode(int argc, char* argv[], int cmd)
             
             /* For debugging */
             if (DEBUG_MODE) {
-                if (is_sorted(a2, a2 + n))
+                if (is_sorted(a1, a1 + n))
                     cerr << "[DEBUG]: The array a1[] is sorted!\n";
             }
 
@@ -204,8 +204,7 @@ void algMode(int argc, char* argv[], int cmd)
 
         string order_type[4] = {"Randomize", "Nearly Sorted", "Sorted", "Reversed"};
 
-        int idx = 0;
-        while (idx < 4) {
+        for (int idx = 0; idx < 4; idx++) {
             cout << '\n' << "Input order: " << order_type[idx] << '\n';
             cout << "-----------------------------\n";
 
@@ -220,7 +219,7 @@ void algMode(int argc, char* argv[], int cmd)
             }
 
             copyArray(a2, a1, n);
-            string file_name = "input_" + to_string(idx + 1) + ".txt";
+            string file_name = "input_" + toString(idx + 1) + ".txt";
             writeFile(file_name, a1, n);
 
             if (para_time) {
@@ -234,7 +233,7 @@ void algMode(int argc, char* argv[], int cmd)
                 
                 /* For debugging */
                 if (DEBUG_MODE) {
-                    if (is_sorted(a2, a2 + n))
+                    if (is_sorted(a1, a1 + n))
                         cerr << "[DEBUG]: The array a1[] is sorted!\n";
                 }
             }
@@ -250,10 +249,9 @@ void algMode(int argc, char* argv[], int cmd)
                 /* For debugging */
                 if (DEBUG_MODE) {
                     if (is_sorted(a2, a2 + n))
-                        cerr << "[DEBUG]: The array a1[] is sorted!\n";
+                        cerr << "[DEBUG]: The array a2[] is sorted!\n";
                 }
             }
-            ++idx;
         }
         delete[] a1;
         delete[] a2;
@@ -294,7 +292,7 @@ void cmpMode(int argc, char* argv[], int cmd)
         
         /* For debugging */
         if (DEBUG_MODE) {
-            if (is_sorted(a3, a3 + n))
+            if (is_sorted(a1, a1 + n))
                 cerr << "[DEBUG]: The array a1[] is sorted!\n";
         }
 
@@ -309,8 +307,8 @@ void cmpMode(int argc, char* argv[], int cmd)
         
         /* For debugging */
         if (DEBUG_MODE) {
-            if (is_sorted(a4, a4 + n))
-                cerr << "[DEBUG]: The array a1[] is sorted!\n";
+            if (is_sorted(a2, a2 + n))
+                cerr << "[DEBUG]: The array a2[] is sorted!\n";
         }
 
         delete[] a1;
@@ -367,7 +365,7 @@ void cmpMode(int argc, char* argv[], int cmd)
         
         /* For debugging */
         if (DEBUG_MODE) {
-            if (is_sorted(a2, a2 + n))
+            if (is_sorted(a1, a1 + n))
                 cerr << "[DEBUG]: The array a1[] is sorted!\n";
         }
 
@@ -381,8 +379,8 @@ void cmpMode(int argc, char* argv[], int cmd)
         
         /* For debugging */
         if (DEBUG_MODE) {
-            if (is_sorted(a4, a4 + n))
-                cerr << "[DEBUG]: The array a1[] is sorted!\n";
+            if (is_sorted(a3, a3 + n))
+                cerr << "[DEBUG]: The array a3[] is sorted!\n";
         }
 
         delete[] a1;

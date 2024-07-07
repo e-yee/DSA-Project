@@ -10,6 +10,8 @@ using namespace std::chrono;
 
 // -------------------------- count comparisons --------------------------
 
+
+//Selection Sort
 void selectionSort(int a[], int n, long long &cnt_cmp)
 {
     cnt_cmp = 0;
@@ -25,6 +27,8 @@ void selectionSort(int a[], int n, long long &cnt_cmp)
     }
 }
 
+
+//Insertion Sort
 void insertionSort(int a[], int n, long long &cnt_cmp)
 {
     cnt_cmp = 0;
@@ -42,6 +46,8 @@ void insertionSort(int a[], int n, long long &cnt_cmp)
     }
 }
 
+
+//Bubble Sort
 void bubbleSort(int a[], int n, long long &cnt_cmp)
 {
     cnt_cmp = 0;
@@ -62,6 +68,8 @@ void bubbleSort(int a[], int n, long long &cnt_cmp)
     }
 }
 
+
+//Heap Sort
 void Heapify(int a[], int n, int i, long long &cnt_cmp) 
 {
     int largest = i;
@@ -91,6 +99,8 @@ void heapSort(int a[], int n, long long &cnt_cmp)
     }
 }
 
+
+//Merge Sort
 void Merge(int a[], int l, int mid, int r, long long &cnt_cmp)
 {
     vector<int> left_part(a + l, a + mid + 1);
@@ -130,29 +140,55 @@ void mergeSort(int a[], int n, long long &cnt_cmp)
     mergeSortRecursion(a, 0, n - 1, cnt_cmp);
 }
 
-void countingSort(int a[], int n, long long &cnt_cmp)
+//Quick Sort
+int Partition(int a[], int low, int high, long long& cnt_cmp)
 {
-    cnt_cmp = 0;
+    int median = a[low] + a[high] + a[(int) ((low + high) / 2)] - max(max(a[low], a[high]), a[(int) ((low + high) / 2)]) - min(min(a[low], a[high]), a[(int) ((low + high) / 2)]);
+
+    cnt_cmp += 4;
+
+    int pos = low;
+    if (++cnt_cmp && median == a[high]) pos = high;
+    if (++cnt_cmp && median == a[(int) (low + high) / 2]) pos = (int) (low + high) / 2;
+    swap(a[low], a[pos]);
+
+    int pivot = low;
+    int last_S1 = low;
+    int first_unknown = low + 1;
+ 
+    while (++cnt_cmp && first_unknown <= high) {
+        if (++cnt_cmp && a[first_unknown] < a[pivot]) {
+            swap(a[last_S1 + 1], a[first_unknown]);
+            last_S1++;
+        }
+        first_unknown++;
+    }
+    swap(a[pivot], a[last_S1]);
     
-    int maxA = a[0];
-    for (int i = 0; ++cnt_cmp && i < n; i++)
-        if (++cnt_cmp && maxA < a[i])
-            maxA = a[i];
-
-    int* cnt = new int[maxA + 1];
-    for (int x = 0; ++cnt_cmp && x <= maxA; x++)
-        cnt[x] = 0;
-
-    for (int i = 0; ++cnt_cmp && i < n; i++)
-        ++cnt[a[i]];
-    
-    for (int x = 0, id = 0; ++cnt_cmp && x <= maxA; x++)
-        while (++cnt_cmp && cnt[x]-- > 0)
-            a[id++] = x;
-
-    delete[] cnt;
+    return last_S1;
 }
 
+void quickSortRecursion(int a[], int low, int high, long long& cnt_cmp)
+{
+    if (low < high) {
+        int pivot = Partition(a, low, high, cnt_cmp);
+        if (++cnt_cmp && pivot > low + 1) {
+            quickSortRecursion(a, low, pivot - 1, cnt_cmp);
+        }
+        if (++cnt_cmp && pivot < high - 1) {
+            quickSortRecursion(a, pivot + 1, high, cnt_cmp);
+        }
+    }
+}
+
+void quickSort(int a[], int n, long long& cnt_cmp)
+{
+    cnt_cmp = 0;
+    quickSortRecursion(a, 0, n - 1, cnt_cmp);
+}
+
+
+//Radix Sort
 int findMaxPos(int a[], int n, long long &cnt_cmp) 
 {
     int m = 0;
@@ -164,7 +200,7 @@ int findMaxPos(int a[], int n, long long &cnt_cmp)
 
 void countSort(int a[], int n, int exp, long long &cnt_cmp) 
 {
-    int *output = new int[n];
+    int* output = new int[n];
     int cnt[10] = { 0 };
 
     for (int i = 0; ++cnt_cmp && i < n; i++)
@@ -195,6 +231,84 @@ void radixSort(int a[], int n, long long &cnt_cmp)
         countSort(a, n, exp, cnt_cmp);
 }
 
+
+//Shaker Sort
+void shakerSort(int a[], int n, long long& cnt_cmp)
+{
+    cnt_cmp = 0;
+    bool swapped = true;
+    int start = 0, last = n - 1;
+    
+    while (++cnt_cmp && swapped == true) {
+        swapped = false;
+
+        for (int i = start; ++cnt_cmp && i < last; i++) {
+            if (++cnt_cmp && a[i] > a[i + 1]) {
+                swap(a[i], a[i + 1]);
+                swapped = true;
+            }
+        }
+
+        if (++cnt_cmp && swapped == false) break;
+
+        swapped = false;
+        last--;
+
+        for (int i = last - 1; ++cnt_cmp && i >= start; i--) {
+            if (++cnt_cmp && a[i] > a[i + 1]) {
+                swap(a[i], a[i + 1]);
+                swapped = true;
+            }
+        }
+
+        start++;
+    }
+}
+
+
+//Shell Sort
+void shellSort(int arr[], int n, long long& cnt_cmp) {
+    cnt_cmp = 0;
+
+    for (int gap = n / 2; ++cnt_cmp && gap > 0; gap /= 2) {
+        for (int i = gap; ++cnt_cmp && i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; (++cnt_cmp && j >= gap) && (++cnt_cmp && arr[j - gap] > temp); j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}
+
+
+//Counting Sort
+void countingSort(int a[], int n, long long &cnt_cmp)
+{
+    cnt_cmp = 0;
+    
+    int maxA = a[0];
+    for (int i = 0; ++cnt_cmp && i < n; i++)
+        if (++cnt_cmp && maxA < a[i])
+            maxA = a[i];
+
+    int* cnt = new int[maxA + 1];
+    for (int x = 0; ++cnt_cmp && x <= maxA; x++)
+        cnt[x] = 0;
+
+    for (int i = 0; ++cnt_cmp && i < n; i++)
+        ++cnt[a[i]];
+    
+    for (int x = 0, id = 0; ++cnt_cmp && x <= maxA; x++)
+        while (++cnt_cmp && cnt[x]-- > 0)
+            a[id++] = x;
+
+    delete[] cnt;
+}
+
+
+//Flash Sort
 int findMinPos(int a[], int n, long long &cnt_cmp) 
 {
     int m = 0;
@@ -233,7 +347,7 @@ void flashSort(int a[], int n, long long &cnt_cmp)
     cnt_cmp = 0;
 
     int m = 0.45 * n;
-    int *bucket = new int[m];
+    int* bucket = new int[m];
     int max_pos = findMaxPos(a, n, cnt_cmp);
     int min_pos = findMinPos(a, n, cnt_cmp);
     double c = (m - 1) / (a[max_pos] - a[min_pos]);
@@ -268,6 +382,8 @@ void flashSort(int a[], int n, long long &cnt_cmp)
 
 // ----------------------- calculate running time -----------------------
 
+
+//Selection Sort
 void selectionSort(int a[], int n, double &duration)
 {
     duration = 0;
@@ -288,6 +404,8 @@ void selectionSort(int a[], int n, double &duration)
     duration = (double)elapsed.count();
 }
 
+
+//Insertion Sort
 void insertionSort(int a[], int n, double &duration)
 {
     duration = 0;
@@ -310,6 +428,8 @@ void insertionSort(int a[], int n, double &duration)
     duration = (double)elapsed.count();
 }
 
+
+//Bubble Sort
 void bubbleSort(int a[], int n, double &duration)
 {
     duration = 0;
@@ -335,6 +455,8 @@ void bubbleSort(int a[], int n, double &duration)
     duration = (double)elapsed.count();
 }
 
+
+//Heap Sort
 void Heapify(int a[], int n, int i)
 {
     int largest = i;
@@ -369,6 +491,8 @@ void heapSort(int a[], int n, double &duration)
     duration = (double)elapsed.count();
 }
 
+
+//Merge Sort
 void Merge(int a[], int l, int mid, int r)
 {
     vector<int> left_part(a + l, a + mid + 1);
@@ -414,34 +538,59 @@ void mergeSort(int a[], int n, double &duration)
     duration = (double)elapsed.count();
 }
 
-void countingSort(int a[], int n, double &duration)
+
+//Quick Sort
+int Partition(int a[], int low, int high)
+{
+    int median = a[low] + a[high] + a[(int) (low + high) / 2] - max(max(a[low], a[high]), a[(int) (low + high) / 2]) - min(min(a[low], a[high]), a[(int) (low + high) / 2]);
+    int pos = low;
+    if (median == a[high]) pos = high;
+    if (median == a[(int) (low + high) / 2]) pos = (int) (low + high) / 2;
+    swap(a[low], a[pos]);
+
+    int pivot = low;
+    int last_S1 = low;
+    int first_unknown = low + 1;
+    
+    while (first_unknown <= high) {
+        if (a[first_unknown] < a[pivot]) {
+            swap(a[last_S1 + 1], a[first_unknown]);
+            last_S1++;
+        }
+        first_unknown++;
+    }
+    swap(a[pivot], a[last_S1]);
+
+    return last_S1;
+}
+
+void quickSortRecursion(int a[], int low, int high)
+{
+    if (low < high) {
+        int pivot = Partition(a, low, high);
+        if (pivot > low + 1) {
+            quickSortRecursion(a, low, pivot - 1);
+        }
+        if (pivot < high - 1) {
+            quickSortRecursion(a, pivot + 1, high);
+        }
+    }
+}
+
+void quickSort(int a[], int n, double& duration)
 {
     duration = 0;
-    auto start_time = system_clock::now();
-    
-    int maxA = a[0];
-    for (int i = 0; i < n; i++)
-        if (maxA < a[i])
-            maxA = a[i];
+    auto time_start = system_clock::now();
 
-    int* cnt = new int[maxA + 1];
-    for (int x = 0; x <= maxA; x++)
-        cnt[x] = 0;
+    quickSortRecursion(a, 0, n - 1);
 
-    for (int i = 0; i < n; i++)
-        ++cnt[a[i]];
-    
-    for (int x = 0, id = 0; x <= maxA; x++)
-        while (cnt[x]-- > 0)
-            a[id++] = x;
-
-    delete[] cnt;
-
-    auto end_time = system_clock::now();
-    auto elapsed = end_time - start_time;
+    auto time_end = system_clock::now();
+    auto elapsed = time_end - time_start;
     duration = (double)elapsed.count();
 }
 
+
+//Radix Sort
 int findMaxPos(int a[], int n) 
 {
     int m = 0;
@@ -453,7 +602,7 @@ int findMaxPos(int a[], int n)
 
 void countSort(int a[], int n, int exp) 
 {
-    int *output = new int[n];
+    int* output = new int[n];
     int cnt[10] = { 0 };
 
     for (int i = 0; i < n; i++)
@@ -498,6 +647,101 @@ int findMinPos(int a[], int n)
     return m;
 }
 
+
+//Shaker Sort
+void shakerSort(int a[], int n, double& duration)
+{
+    duration = 0;
+    auto time_start = system_clock::now();
+
+    bool swapped = true;
+    int start = 0, last = n - 1;
+
+    while (swapped == true) {
+        swapped = false;
+
+        for (int i = start; i < last; i++) {
+            if (a[i] > a[i + 1]) {
+                swap(a[i], a[i + 1]);
+                swapped = true;
+            }
+        }
+
+        if (swapped == false) break;
+
+        swapped = false;
+        last--;
+
+        for (int i = last - 1; i >= start; i--) {
+            if (a[i] > a[i + 1]) {
+                swap(a[i], a[i + 1]);
+                swapped = true;
+            }
+        }
+
+        start++;
+    }
+
+    auto time_end = system_clock::now();
+    auto elapsed = time_end - time_start;
+    duration = (double)elapsed.count();
+}
+
+
+//Shell Sort
+void shellSort(int arr[], int n, double& duration)
+{
+    duration = 0;
+    auto time_start = system_clock::now();
+
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+
+    auto time_end = system_clock::now();
+    auto elapsed = time_end - time_start;
+    duration = (double)elapsed.count();
+}
+
+
+//Counting Sort
+void countingSort(int a[], int n, double &duration)
+{
+    duration = 0;
+    auto start_time = system_clock::now();
+    
+    int maxA = a[0];
+    for (int i = 0; i < n; i++)
+        if (maxA < a[i])
+            maxA = a[i];
+
+    int* cnt = new int[maxA + 1];
+    for (int x = 0; x <= maxA; x++)
+        cnt[x] = 0;
+
+    for (int i = 0; i < n; i++)
+        ++cnt[a[i]];
+    
+    for (int x = 0, id = 0; x <= maxA; x++)
+        while (cnt[x]-- > 0)
+            a[id++] = x;
+
+    delete[] cnt;
+
+    auto end_time = system_clock::now();
+    auto elapsed = end_time - start_time;
+    duration = (double)elapsed.count();
+}
+
+
+//Flash Sort
 void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, double c) 
 {
     int bucket_id = m - 1;
@@ -528,7 +772,7 @@ void flashSort(int a[], int n, double &duration)
     auto start_time = system_clock::now();
 
     int m = 0.45 * n;
-    int *bucket = new int[m];
+    int* bucket = new int[m];
     int max_pos = findMaxPos(a, n);
     int min_pos = findMinPos(a, n);
     double c = (m - 1) / (a[max_pos] - a[min_pos]);

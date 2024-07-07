@@ -19,6 +19,18 @@ int toInt(string s)
     return n;
 }   
 
+string toString(int n) {
+    bool negative = (n < 0);
+	if (n < 0) n = -n;
+    string res = "";
+    while (n != 0) {
+        res = (char) (n % 10 + '0') + res;
+        n /= 10;
+    }
+    if (negative) res = '-' + res;
+    return res;
+}
+
 bool isInt(string s)
 {
     if (s.size() < 1 || s.size() > 9)

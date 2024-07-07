@@ -118,13 +118,13 @@ void generateDataA(int* a, int n, int data_type, string filename)
         return;
 	}
 
-    ofstream outputFile(filename.c_str());
-    if (outputFile.is_open()) {
-        outputFile << n << endl;
+    ofstream output_file(filename.c_str());
+    if (output_file.is_open()) {
+        output_file << n << endl;
         for (int i = 0; i < n; i++) {
-            outputFile << a[i] << " ";
+            output_file << a[i] << " ";
         }
-        outputFile.close();
+        output_file.close();
         cout << "Data written to file successfully." << endl;
     } else {
         cout << "Error opening file." << endl;
