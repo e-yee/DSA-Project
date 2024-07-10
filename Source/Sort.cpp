@@ -323,17 +323,22 @@ void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, do
     int bucket_id = m - 1;
     int flash = 0, move = 0, i = 0, k = 0;
 
-    swap(a[max_pos], a[0]);
+    int temp = a[max_pos];
+    a[max_pos] = a[0];
+    a[0] = temp;
+
+    int min_val = a[min_pos];
+
     while(++cnt_cmp && move < n - 1) {
         while (++cnt_cmp && i > bucket[bucket_id] - 1) {
             ++i;
-            bucket_id = c * (a[i] - a[min_pos]);
+            bucket_id = c * (a[i] - min_val);
         }
 
         flash = a[i];
         if (++cnt_cmp && bucket_id < 0) break;
         while (++cnt_cmp && i != bucket[bucket_id]) {
-            bucket_id = c * (a[i] - a[min_pos]);
+            bucket_id = c * (flash - min_val);
             int hold = a[k = --bucket[bucket_id]];
             a[k] = flash;
             flash = hold;
@@ -747,17 +752,22 @@ void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, do
     int bucket_id = m - 1;
     int flash = 0, move = 0, i = 0, k = 0;
 
-    swap(a[max_pos], a[0]);
+    int temp = a[max_pos];
+    a[max_pos] = a[0];
+    a[0] = temp;
+
+    int min_val = a[min_pos];
+
     while (move < n - 1) {
         while (i > bucket[bucket_id] - 1) {
             ++i;
-            bucket_id = c * (a[i] - a[min_pos]);
+            bucket_id = c * (a[i] - min_val);
         }
 
         flash = a[i];
         if (bucket_id < 0) break;
         while (i != bucket[bucket_id]) {
-            bucket_id = c * (a[i] - a[min_pos]);
+            bucket_id = c * (flash - min_val);
             int hold = a[k = --bucket[bucket_id]];
             a[k] = flash;
             flash = hold;
