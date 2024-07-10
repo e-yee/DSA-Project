@@ -325,7 +325,7 @@ void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, do
 
     swap(a[max_pos], a[0]);
     while(++cnt_cmp && move < n - 1) {
-        while (++cnt_cmp && i > bucket[bucket_id - 1]) {
+        while (++cnt_cmp && i > bucket[bucket_id] - 1) {
             ++i;
             bucket_id = c * (a[i] - a[min_pos]);
         }
@@ -749,7 +749,7 @@ void flashSwap(int a[], int n, int bucket[], int m, int min_pos, int max_pos, do
 
     swap(a[max_pos], a[0]);
     while (move < n - 1) {
-        while (i > bucket[bucket_id - 1]) {
+        while (i > bucket[bucket_id] - 1) {
             ++i;
             bucket_id = c * (a[i] - a[min_pos]);
         }
