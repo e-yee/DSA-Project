@@ -2,7 +2,7 @@
 - Quick Sort:
 + Links: https://www.geeksforgeeks.org/implement-quicksort-with-first-element-as-pivot/ (27/06/2024)
 		 https://www.bing.com/chat?q=Microsoft+Copilot&FORM=hpcodx (05/07/2024)
-		 https://www.geeksforgeeks.org/time-and-space-complexity-analysis-of-quick-sort/ (05/07/2024)
+		 https://www.geeksforgeeks.org/time-and-space-complexity-analysis-of-quick-sort/ (06/07/2024)
 + Date: 
 
 - Shaker Sort:
