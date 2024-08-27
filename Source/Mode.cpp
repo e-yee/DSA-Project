@@ -398,7 +398,8 @@ void cmpMode(int argc, char* argv[], int cmd)
 void calcTime(int a[], int n, const string alg, double &duration)
 {
     int type = find(algs.begin(), algs.end(), alg) - algs.begin();
-    
+    cout << "Type: " << type << '\n';
+
     if (type == 0) selectionSort(a, n, duration); 
     if (type == 1) insertionSort(a, n, duration);
     if (type == 2) bubbleSort(a, n, duration);
